@@ -1,0 +1,53 @@
+<div class="demo-container" mdl-shadow="2">
+	<mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed>
+		<mdl-layout-header>
+			<mdl-layout-header-row>
+				<mdl-layout-title>Devotee Management</mdl-layout-title>
+				<mdl-layout-spacer></mdl-layout-spacer>
+				<!-- Navigation. We hide it in small screens. -->
+				<nav class="mdl-navigation mdl-layout--large-screen-only">
+					<a class="mdl-navigation__link">List</a>
+					<a class="mdl-navigation__link">Search</a>
+				</nav>
+			</mdl-layout-header-row>
+		</mdl-layout-header>
+		<mdl-layout-content>
+			<div class="mdl-grid">
+				<div class="mdl-cell mdl-cell--4-col graybox"></div>
+				<div class="mdl-cell mdl-cell--3-col graybox">
+					<mdl-textfield type="text" label="Devotee Name" [value]="devoteeName" (input)="devoteeName = $event.target.value" floating-label></mdl-textfield>
+				</div>
+				<div class="mdl-cell mdl-cell--1-col graybox">
+					<button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Search
+					</button>
+				</div>
+				<div class="mdl-cell mdl-cell--2-col graybox">
+				</div>
+				<div class="mdl-cell mdl-cell--1-col graybox">
+					<label>Maximum Results</label>
+				</div>
+				<div class="mdl-cell mdl-cell--1-col graybox">
+					<div class="mdl-selectfield">
+						<select class="browser-default">
+							<option selected>10</option>
+							<option>50</option>
+							<option>100</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="mdl-grid">
+				<div class="mdl-cell mdl-cell--12-col graybox">
+					<mdl-list>
+						<mdl-list-item mdl-ripple *ngFor="let devotee of devoteeList">
+							<mdl-list-item-primary-content>
+								<mdl-icon mdl-list-item-icon>person</mdl-icon>
+								{{devotee.name}}
+							</mdl-list-item-primary-content>
+						</mdl-list-item>
+					</mdl-list>
+				</div>
+			</div>
+		</mdl-layout-content>
+	</mdl-layout>
+</div>

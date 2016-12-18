@@ -1,0 +1,5 @@
+<form>
+	<h1>Please Enter the Password</h1>
+	<input placeholder="Password" type="text" required=""  [value]="password" (input)="password = $event.target.value">
+	<button (click)="login()">Login</button>
+</form>
