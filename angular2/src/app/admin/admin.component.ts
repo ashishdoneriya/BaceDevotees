@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Devotee } from '../devotee';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+	selector: 'app-admin',
+	templateUrl: './admin.component.html',
+	styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
 
-  constructor() { }
+	constructor(private modalService: NgbModal) { }
 
 	devoteeList: Devotee[];
 
@@ -17,5 +18,8 @@ export class AdminComponent implements OnInit {
 		let devotee: Devotee = new Devotee();
 		devotee.name = 'Ashish Doneriya';
 		this.devoteeList.push(devotee);
+	}
+
+	addDevotee() {
 	}
 }

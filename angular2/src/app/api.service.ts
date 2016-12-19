@@ -14,7 +14,7 @@ export class ApiService {
 	constructor(private http: Http) { }
 
 	login(password: string) {
-		return this.http.post('/dologin', { 'password': password });
+		return this.http.post('/dologin', { 'password': password }).map(this.extractData);
 	}
 
 	list(page?: any, maximum?: any): Observable<Devotee[]> {

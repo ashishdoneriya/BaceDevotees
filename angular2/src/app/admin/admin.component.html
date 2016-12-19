@@ -1,53 +1,42 @@
-<div class="demo-container" mdl-shadow="2">
-	<mdl-layout mdl-layout-fixed-header mdl-layout-header-seamed>
-		<mdl-layout-header>
-			<mdl-layout-header-row>
-				<mdl-layout-title>Devotee Management</mdl-layout-title>
-				<mdl-layout-spacer></mdl-layout-spacer>
-				<!-- Navigation. We hide it in small screens. -->
-				<nav class="mdl-navigation mdl-layout--large-screen-only">
-					<a class="mdl-navigation__link">List</a>
-					<a class="mdl-navigation__link">Search</a>
-				</nav>
-			</mdl-layout-header-row>
-		</mdl-layout-header>
-		<mdl-layout-content>
-			<div class="mdl-grid">
-				<div class="mdl-cell mdl-cell--4-col graybox"></div>
-				<div class="mdl-cell mdl-cell--3-col graybox">
-					<mdl-textfield type="text" label="Devotee Name" [value]="devoteeName" (input)="devoteeName = $event.target.value" floating-label></mdl-textfield>
-				</div>
-				<div class="mdl-cell mdl-cell--1-col graybox">
-					<button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Search
-					</button>
-				</div>
-				<div class="mdl-cell mdl-cell--2-col graybox">
-				</div>
-				<div class="mdl-cell mdl-cell--1-col graybox">
-					<label>Maximum Results</label>
-				</div>
-				<div class="mdl-cell mdl-cell--1-col graybox">
-					<div class="mdl-selectfield">
-						<select class="browser-default">
-							<option selected>10</option>
-							<option>50</option>
-							<option>100</option>
-						</select>
-					</div>
-				</div>
-			</div>
-			<div class="mdl-grid">
-				<div class="mdl-cell mdl-cell--12-col graybox">
-					<mdl-list>
-						<mdl-list-item mdl-ripple *ngFor="let devotee of devoteeList">
-							<mdl-list-item-primary-content>
-								<mdl-icon mdl-list-item-icon>person</mdl-icon>
-								{{devotee.name}}
-							</mdl-list-item-primary-content>
-						</mdl-list-item>
-					</mdl-list>
-				</div>
-			</div>
-		</mdl-layout-content>
-	</mdl-layout>
+<nav class="navbar navbar-full navbar-fixed-top navbar-dark bg-inverse">
+    <h1 class="navbar-brand">Devotees Management</h1>
+    <div class="nav navbar-nav float-xs-right">
+        <a class="nav-item nav-link" (click)="addDevotee()">Add Devotee</a>
+        <a class="nav-item nav-link" (click)="logout()">Logout</a>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row" style="margin-top:100px;">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search Devotee">
+                <span class="input-group-btn">
+					<button class="btn btn-secondary" type="button">Search</button>
+      			</span>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-top:50px;">
+        <div class="col-lg-12">
+            <table class="table">
+                <thead class="thead-inverse">
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
