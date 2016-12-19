@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { ApiService } from './api.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormComponent } from './admin/form/form.component';
 
 const appRoutes: Routes = [
 	{ path: '', component: LoginComponent },
@@ -19,7 +20,8 @@ const appRoutes: Routes = [
 	declarations: [
 		AppComponent,
 		LoginComponent,
-		AdminComponent
+		AdminComponent,
+		FormComponent
 	],
 	imports: [
 		BrowserModule,
@@ -30,6 +32,7 @@ const appRoutes: Routes = [
 		RouterModule.forRoot(appRoutes)
 	],
 	providers: [ApiService],
-	bootstrap: [AppComponent]
+	bootstrap: [AppComponent],
+	entryComponents: [FormComponent]
 })
 export class AppModule { }

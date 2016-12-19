@@ -16,6 +16,9 @@ export class ApiService {
 	login(password: string) {
 		return this.http.post('/dologin', { 'password': password }).map(this.extractData);
 	}
+	logout() {
+		this.http.post('/logout', {});
+	}
 
 	list(page?: any, maximum?: any): Observable<Devotee[]> {
 		if (page || maximum) {
