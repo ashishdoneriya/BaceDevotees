@@ -1,12 +1,87 @@
 <div class="modal-header">
-	<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
 		<span aria-hidden="true">&times;</span>
 	</button>
-	<h4 class="modal-title">Hi there!</h4>
+    <h4 class="modal-title">Add</h4>
 </div>
 <div class="modal-body">
-	<p>Hello</p>
+    <form class="form-horizontal">
+        <fieldset>
+
+            <div class="form-group row">
+                <label class="col-md-4 control-label" for="name">Name</label>
+                <div class="col-md-7">
+                    <input [(ngModel)]="devotee.name" id="name" name="name" type="text" placeholder="" class="form-control input-md" required="">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 control-label" for="mobileNumber">Mobile Number</label>
+                <div class="col-md-7">
+                    <input [(ngModel)]="devotee.mobileNumber" id="mobileNumber" name="mobileNumber" type="text" placeholder="" class="form-control input-md">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 control-label" for="email">Email</label>
+                <div class="col-md-7">
+                    <input [(ngModel)]="devotee.email" id="email" name="email" type="text" placeholder="" class="form-control input-md">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 control-label" for="dob">Date of Birth</label>
+                <div class="col-md-7">
+                    <input [(ngModel)]="devotee.dob" id="dob" name="dob" type="text" placeholder="" class="form-control input-md">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 control-label" for="fatherName">Father's Name</label>
+                <div class="col-md-7">
+                    <input [(ngModel)]="devotee.fatherName" id="fatherName" name="fatherName" type="text" placeholder="" class="form-control input-md">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 control-label" for="emergencyNumber">Emergency Number</label>
+                <div class="col-md-7">
+                    <input [(ngModel)]="devotee.emergencyNumber" id="emergencyNumber" name="emergencyNumber" type="text" placeholder="" class="form-control input-md">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 control-label" for="baceJoinDate">Bace Join Date</label>
+                <div class="col-md-7">
+                    <input [(ngModel)]="devotee.baceJoinDate" id="baceJoinDate" name="baceJoinDate" type="text" placeholder="" class="form-control input-md">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 control-label" for="baceLeftDate">Bace Left Date</label>
+                <div class="col-md-7">
+                    <input [(ngModel)]="devotee.baceLeftDate" id="baceLeftDate" name="baceLeftDate" type="text" placeholder="" class="form-control input-md">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 control-label" for="currentAddress">Current Address</label>
+                <div class="col-md-7">
+                    <textarea [(ngModel)]="devotee.currentAddress" class="form-control" id="currentAddress" name="currentAddress"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-4 control-label" for="permanentAddress">Permanent Address</label>
+                <div class="col-md-7">
+                    <textarea [(ngModel)]="devotee.permanentAddress" class="form-control" id="permanentAddress" name="permanentAddress"></textarea>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-secondary" (click)="activeModal.close('Close click')">Close</button>
+    <button type="button" class="btn btn-success" (click)="activeModal.close('save')">Save</button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Close</button>
 </div>

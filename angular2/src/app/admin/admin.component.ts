@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef, NgbModalOptions, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { Devotee } from '../devotee';
 import { FormComponent } from './form/form.component';
@@ -12,10 +12,12 @@ import { ApiService } from '../api.service';
 })
 export class AdminComponent implements OnInit {
 
+	devoteesList: Devotee[];
+
 	constructor(private apiService: ApiService,
 		private router: Router,
 		private modalService: NgbModal) { }
-	devoteesList: Devotee[];
+
 
 	ngOnInit() {
 		this.devoteesList = [];
@@ -25,11 +27,23 @@ export class AdminComponent implements OnInit {
 	}
 
 	addDevotee() {
-		const modalRef = this.modalService.open(FormComponent);
+		let devotee: Devotee = new Devotee();
+		let modelOption: NgbModalOptions = { backdrop: false, keyboard: true };
+		let modalRef: NgbModalRef = this.modalService.open(FormComponent, modelOption);
+		modalRef.componentInstance.devotee = devotee;
+		modalRef.result.then(result => {
+			if (result == 'save') {
+				this.apiService.add(devotee);
+			}
+		});
 	}
 
 	logout() {
 		this.apiService.logout();
 		this.router.navigate(['login']);
+	}
+
+	updateList() {
+		this.apiService.list().subscribe()
 	}
 }

@@ -1,0 +1,14 @@
+.control-label {
+    text-align: right;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 7px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .control-label {
+        text-align: left;
+    }
+}

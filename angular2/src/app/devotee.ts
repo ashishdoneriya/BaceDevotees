@@ -5,9 +5,19 @@ export class Devotee {
 	fatherName?: string;
 	permanentAddress?: string;
 	currentAddress?: string;
-	mobileNumber?: number;
+	mobileNumber?: string;
 	email?: string;
-	emergencyNumber?: number;
+	emergencyNumber?: string;
 	baceJoinDate?: Date;
 	baceLeftDate?: Date;
+
+	constructor() {
+		this.name = '';
+		this.fatherName = '';
+		this.permanentAddress = '';
+		this.currentAddress = '';
+		this.mobileNumber = '';
+		this.email = '';
+		this.emergencyNumber = '';
+	}
 }
