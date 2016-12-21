@@ -14,7 +14,7 @@
 
 	<mvc:annotation-driven />
 	
-	<!-- <mvc:resources mapping="/static/**" location="/static/" /> -->
+	<mvc:resources mapping="/assets/**" location="/assets/" />
 
 	<mvc:default-servlet-handler />
 
@@ -43,12 +43,12 @@
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
 			</props>
 		</property>
 		<property name="packagesToScan">
 			<array>
-				<value>manager.pojo</value>
+				<value>bace.pojo</value>
 			</array>
 		</property>
 	</bean>

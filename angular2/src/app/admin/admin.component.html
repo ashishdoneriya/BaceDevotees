@@ -33,7 +33,7 @@
                         <td><a (click)="edit(devotee)">{{devotee.name}}</a></td>
                         <td>
                             <button (click)="edit(devotee)" type="button" style="margin-left:10px;" class="btn btn-warnign"><i class="fa fa-trash" aria-hidden="true" style="margin-right:5px;"></i>Edit</button>
-                            <button type="button" style="margin-left:10px;" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true" style="margin-right:5px;"></i>Delete</button>
+                            <button (click)="delete(devotee.id)" type="button" style="margin-left:10px;" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true" style="margin-right:5px;"></i>Delete</button>
                         </td>
                     </tr>
                 </tbody>

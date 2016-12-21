@@ -22,11 +22,7 @@ export class AdminComponent implements OnInit {
 
 
 	ngOnInit() {
-		this.devoteesList = [];
-		this.searchQuery = '';
-		let devotee: Devotee = new Devotee();
-		devotee.name = 'Ashish Doneriya';
-		this.devoteesList.push(devotee);
+		this.updateList();
 	}
 
 	search() {
@@ -41,7 +37,7 @@ export class AdminComponent implements OnInit {
 		modalRef.componentInstance.type = "Add";
 		modalRef.result.then(result => {
 			if (result == 'save') {
-			//	this.apiService.add(devotee);
+				this.apiService.save(devotee).subscribe(message => console.log(message));
 			}
 		});
 	}
@@ -53,9 +49,13 @@ export class AdminComponent implements OnInit {
 		modalRef.componentInstance.type = "Update";
 		modalRef.result.then(result => {
 			if (result == 'save') {
-			//	this.apiService.update(devotee);
+				this.apiService.save(devotee).subscribe(message => console.log(message));
 			}
 		});
+	}
+
+	delete(id) {
+		this.apiService.delete(id);
 	}
 
 	logout() {

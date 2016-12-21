@@ -14,22 +14,13 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
-	<servlet>
-		<servlet-name>dispatcherServlet</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>/WEB-INF/dispatcherServlet.xml</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
 	<servlet-mapping>
 		<servlet-name>dispatcherServlet</servlet-name>
-		<url-pattern>/apis</url-pattern>
+		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	
 	<error-page>
 		<location>/index.html</location>
 	</error-page>
+	
 </web-app>

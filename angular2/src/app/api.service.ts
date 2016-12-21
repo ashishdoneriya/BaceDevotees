@@ -33,35 +33,35 @@ export class ApiService {
 				params.set('maximumResults', maximumResults);
 			}
 			return this.http.get('/devotees', { search: params })
-				.map(this.extractData)
-				.catch(this.handleError);
+				.map(this.extractData);
+			//	.catch(this.handleError);
 		} else {
 			return this.http.get('/apis/devotees')
-				.map(this.extractData)
-				.catch(this.handleError);
+				.map(this.extractData);
+				//.catch(this.handleError);
 		}
 	}
 
 	get(id: any): Observable<Devotee> {
 		return this.http.get('/apis/devotee/' + id)
-						.map(this.extractData)
-						.catch(this.handleError);
+			.map(this.extractData);
+					//	.catch(this.handleError);
 	}
 
 	save(devotee: Devotee) {
 		let headers = new Headers({ 'Content-Type': 'application/json' });
 		let options = new RequestOptions({ headers: headers });
-		return this.http.post('/apis/save', Devotee, options)
-						.map(this.extractData)
-        				.catch(this.handleError);
+		return this.http.post('/apis/save', devotee, options)
+			.map(this.extractData);
+        			//	.catch(this.handleError);
 	}
 
 	delete(id: any) {
 		let headers = new Headers({ 'Content-Type': 'application/json' });
 		let options = new RequestOptions({ headers: headers });
 		return this.http.delete('/apis/delete/' + id, options)
-						.map(this.extractData)
-        				.catch(this.handleError);
+			.map(this.extractData);
+        				//.catch(this.handleError);
 	}
 
 	private extractData(res: Response) {

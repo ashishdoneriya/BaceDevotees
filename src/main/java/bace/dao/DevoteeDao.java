@@ -46,8 +46,10 @@ public class DevoteeDao {
 		session = sessionFactory.getCurrentSession();
 		Criteria cr = session.createCriteria(Devotee.class);
 		cr.addOrder(Order.asc(NAME));
-		cr.setMaxResults(Integer.parseInt(maximumResults));
-		cr.setFirstResult(Integer.parseInt(pageNumber) - 1);
+		if (!isNullOrEmpty(pageNumber) && !isNullOrEmpty(maximumResults)) {
+			cr.setMaxResults(Integer.parseInt(maximumResults));
+			cr.setFirstResult(Integer.parseInt(pageNumber) - 1);
+		}
 		if (searchQuery != null && !searchQuery.isEmpty()) {
 			SimpleExpression se1, se2, se3, se4, se5, se6, se7;
 			se1 = Restrictions.like(NAME, PERCENT + searchQuery + PERCENT);
@@ -60,6 +62,13 @@ public class DevoteeDao {
 			cr.add(Restrictions.or(se1, se2, se3, se4, se5, se6, se7));
 		}
 		return cr.list();
+	}
+	
+	private boolean isNullOrEmpty(String str) {
+		if (str == null || str.isEmpty()) {
+			return true;
+		}
+		return false;
 	}
 	
 	public int getNumberOfPages(String maximumResults) {
