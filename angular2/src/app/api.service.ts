@@ -20,7 +20,7 @@ export class ApiService {
 		this.http.post('/apis/logout', {});
 	}
 
-	list(searchQuery?: string, pageNumber?: any, maximumResults?: any): Observable<Devotee[]> {
+	list(searchQuery?: string, pageNumber?: any, maximumResults?: any) {
 		if (searchQuery || pageNumber || maximumResults) {
 			let params: URLSearchParams = new URLSearchParams();
 			if (searchQuery) {
@@ -32,12 +32,9 @@ export class ApiService {
 			if (maximumResults) {
 				params.set('maximumResults', maximumResults);
 			}
-			return this.http.get('/devotees', { search: params })
-				.map(this.extractData);
-			//	.catch(this.handleError);
+			return this.http.get('/devotees', { search: params });
 		} else {
-			return this.http.get('/apis/devotees')
-				.map(this.extractData);
+			return this.http.get('/apis/devotees');
 				//.catch(this.handleError);
 		}
 	}
@@ -65,6 +62,7 @@ export class ApiService {
 	}
 
 	private extractData(res: Response) {
+		console.log(res);
 		let body = res.json();
 		return body.data || null;
 	}

@@ -30,7 +30,7 @@
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://127.0.0.1:3306/devoteeManagement" />
 		<property name="username" value="root" />
-		<property name="password" value="a" />
+		<property name="password" value="root" />
 	</bean>
 
 	<!-- Configure Hibernate 5 Session Facotry -->
@@ -43,7 +43,7 @@
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>
 		<property name="packagesToScan">

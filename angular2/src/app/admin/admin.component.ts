@@ -14,7 +14,7 @@ import { ApiService } from '../api.service';
 export class AdminComponent implements OnInit {
 
 	devoteesList: Devotee[];
-	searchQuery: string;
+	searchQuery: string = '';
 
 	constructor(private apiService: ApiService,
 		private router: Router,
@@ -26,7 +26,7 @@ export class AdminComponent implements OnInit {
 	}
 
 	search() {
-		this.apiService.list(this.searchQuery).subscribe(data => this.devoteesList = data);
+		this.apiService.list(this.searchQuery).subscribe(data => this.devoteesList = <Array<Devotee>> data.json());
 	}
 
 	add() {
@@ -64,6 +64,8 @@ export class AdminComponent implements OnInit {
 	}
 
 	updateList() {
-		this.apiService.list().subscribe( list => this.devoteesList = list);
+		this.apiService.list().subscribe(list => {
+			this.devoteesList = list.json();
+		});
 	}
 }
