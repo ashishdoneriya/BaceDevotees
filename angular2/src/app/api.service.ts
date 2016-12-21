@@ -20,9 +20,12 @@ export class ApiService {
 		this.http.post('/logout', {});
 	}
 
-	list(page?: any, maximum?: any): Observable<Devotee[]> {
-		if (page || maximum) {
+	list(searchQuery: string, page?: any, maximum?: any): Observable<Devotee[]> {
+		if (searchQuery || page || maximum) {
 			let params: URLSearchParams = new URLSearchParams();
+			if (searchQuery) {
+				params.set("searchQuery", searchQuery);
+			}
 			if (page) {
 				params.set('page', page);
 			}

@@ -1,7 +1,7 @@
 <nav class="navbar navbar-full navbar-fixed-top navbar-dark bg-inverse">
     <h1 class="navbar-brand">Devotees Management</h1>
     <div class="nav navbar-nav float-xs-right">
-        <a class="nav-item nav-link" (click)="addDevotee()">Add Devotee</a>
+        <a class="nav-item nav-link" (click)="add()">Add Devotee</a>
         <a class="nav-item nav-link" (click)="logout()">Logout</a>
     </div>
 </nav>
@@ -10,9 +10,9 @@
         <div class="col-lg-3"></div>
         <div class="col-lg-6">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search Devotee">
+                <input [(ngModel)]="searchQuery" type="text" class="form-control" placeholder="Search Devotee">
                 <span class="input-group-btn">
-					<button class="btn btn-secondary" type="button">Search</button>
+					<button class="btn btn-secondary" type="button" (click)="search()">Search</button>
       			</span>
             </div>
         </div>
@@ -30,11 +30,11 @@
                 <tbody>
                     <tr *ngFor="let devotee of devoteesList; let i = index">
                         <th scope="row">{{ i + 1 }}</th>
-                        <td>{{devotee.name}}</td>
+                        <td><a (click)="edit(devotee)">{{devotee.name}}</a></td>
                         <td>
-							<button type="button" class="btn btn-warning">Edit</button>
-							<button type="button" style="margin-left:10px;" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true" style="margin-right:5px;"></i>Delete</button>
-						</td>
+                            <button (click)="edit(devotee)" type="button" style="margin-left:10px;" class="btn btn-warnign"><i class="fa fa-trash" aria-hidden="true" style="margin-right:5px;"></i>Edit</button>
+                            <button type="button" style="margin-left:10px;" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true" style="margin-right:5px;"></i>Delete</button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

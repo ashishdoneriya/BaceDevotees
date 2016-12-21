@@ -10,6 +10,8 @@ export class FormComponent implements OnInit {
 
 	@Input() devotee: Devotee;
 
+	@Input() type: string;
+
 	constructor(public activeModal: NgbActiveModal) {}
 
 	ngOnInit() {
