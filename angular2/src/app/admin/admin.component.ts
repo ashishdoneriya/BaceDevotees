@@ -64,6 +64,6 @@ export class AdminComponent implements OnInit {
 	}
 
 	updateList() {
-		this.apiService.list().subscribe()
+		this.apiService.list().subscribe( list => this.devoteesList = list);
 	}
 }
