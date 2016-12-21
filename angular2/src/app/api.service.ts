@@ -14,23 +14,23 @@ export class ApiService {
 	constructor(private http: Http) { }
 
 	login(password: string) {
-		return this.http.post('/dologin', { 'password': password }).map(this.extractData);
+		return this.http.post('/apis/dologin', { 'password': password }).map(this.extractData);
 	}
 	logout() {
-		this.http.post('/logout', {});
+		this.http.post('/apis/logout', {});
 	}
 
-	list(searchQuery?: string, page?: any, maximum?: any): Observable<Devotee[]> {
-		if (searchQuery || page || maximum) {
+	list(searchQuery?: string, pageNumber?: any, maximumResults?: any): Observable<Devotee[]> {
+		if (searchQuery || pageNumber || maximumResults) {
 			let params: URLSearchParams = new URLSearchParams();
 			if (searchQuery) {
 				params.set("searchQuery", searchQuery);
 			}
-			if (page) {
-				params.set('page', page);
+			if (pageNumber) {
+				params.set('pageNumber', pageNumber);
 			}
-			if (maximum) {
-				params.set('maximum', maximum);
+			if (maximumResults) {
+				params.set('maximumResults', maximumResults);
 			}
 			return this.http.get('/devotees', { search: params })
 				.map(this.extractData)
@@ -43,23 +43,15 @@ export class ApiService {
 	}
 
 	get(id: any): Observable<Devotee> {
-		return this.http.get('/apis/devotees/' + id)
+		return this.http.get('/apis/devotee/' + id)
 						.map(this.extractData)
 						.catch(this.handleError);
 	}
 
-	add(devotee: Devotee) {
+	save(devotee: Devotee) {
 		let headers = new Headers({ 'Content-Type': 'application/json' });
 		let options = new RequestOptions({ headers: headers });
-		return this.http.post('/apis/add', Devotee, options)
-						.map(this.extractData)
-        				.catch(this.handleError);
-	}
-
-	update(devotee: Devotee) {
-		let headers = new Headers({ 'Content-Type': 'application/json' });
-		let options = new RequestOptions({ headers: headers });
-		return this.http.post('/apis/update', Devotee, options)
+		return this.http.post('/apis/save', Devotee, options)
 						.map(this.extractData)
         				.catch(this.handleError);
 	}
@@ -67,7 +59,7 @@ export class ApiService {
 	delete(id: any) {
 		let headers = new Headers({ 'Content-Type': 'application/json' });
 		let options = new RequestOptions({ headers: headers });
-		return this.http.post('/apis/delete/' + id, options)
+		return this.http.delete('/apis/delete/' + id, options)
 						.map(this.extractData)
         				.catch(this.handleError);
 	}

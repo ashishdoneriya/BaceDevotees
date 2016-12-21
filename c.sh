@@ -1,0 +1,1 @@
+java -jar jetty-runner-9.2.11.v20150529.jar target/DevoteeManagement-1.0.war --port 4202
