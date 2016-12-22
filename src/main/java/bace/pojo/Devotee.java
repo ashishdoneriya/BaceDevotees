@@ -36,6 +36,9 @@ public class Devotee {
 	@Column(name = "email")
 	private String email;
 	
+	@Column(name = "fatherName")
+	private String fatherName;
+	
 	@Column(name = "emergencyNumber")
 	private String emergencyNumber;
 	
@@ -106,6 +109,14 @@ public class Devotee {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getFatherName() {
+		return fatherName;
+	}
+
+	public void setFatherName(String fatherName) {
+		this.fatherName = fatherName;
 	}
 
 	public String getEmergencyNumber() {

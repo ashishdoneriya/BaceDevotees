@@ -30,12 +30,11 @@ export class ApiService {
 				params.set('pageNumber', pageNumber);
 			}
 			if (maximumResults) {
-				params.set('maximumResults', maximumResults);
+				params.set('maximumRows', maximumResults);
 			}
-			return this.http.get('/devotees', { search: params });
+			return this.http.get('/apis/devotees', { search: params });
 		} else {
 			return this.http.get('/apis/devotees');
-				//.catch(this.handleError);
 		}
 	}
 
@@ -49,16 +48,14 @@ export class ApiService {
 		let headers = new Headers({ 'Content-Type': 'application/json' });
 		let options = new RequestOptions({ headers: headers });
 		return this.http.post('/apis/save', devotee, options)
-			.map(this.extractData);
-        			//	.catch(this.handleError);
+			.map((res: Response) => res.text);
 	}
 
 	delete(id: any) {
-		let headers = new Headers({ 'Content-Type': 'application/json' });
+		let headers = new Headers({ 'Content-Type': 'text/html' });
 		let options = new RequestOptions({ headers: headers });
-		return this.http.delete('/apis/delete/' + id, options)
-			.map(this.extractData);
-        				//.catch(this.handleError);
+		return this.http.delete('/apis/devotee/' + id, options)
+			.map( (res:Response) => res.text);
 	}
 
 	private extractData(res: Response) {

@@ -71,8 +71,22 @@ public class DevoteeDao {
 		return false;
 	}
 	
-	public int getNumberOfPages(String maximumResults) {
-		return (Integer) session.createCriteria(Devotee.class).setProjection(Projections.rowCount()).uniqueResult();
+	public long getNumberOfPages(String searchQuery) {
+		session = sessionFactory.getCurrentSession();
+		Criteria cr = session.createCriteria(Devotee.class);
+		cr.addOrder(Order.asc(NAME));
+		if (searchQuery != null && !searchQuery.isEmpty()) {
+			SimpleExpression se1, se2, se3, se4, se5, se6, se7;
+			se1 = Restrictions.like(NAME, PERCENT + searchQuery + PERCENT);
+			se2 = Restrictions.like(PERMANENT_ADDRESS, PERCENT + searchQuery + PERCENT);
+			se3 = Restrictions.like(CURRENT_ADDRESS, PERCENT + searchQuery + PERCENT);
+			se4 = Restrictions.like(MOBILE_NUMBER, PERCENT + searchQuery + PERCENT);
+			se5 = Restrictions.like(EMAIL, PERCENT + searchQuery + PERCENT);
+			se6 = Restrictions.like(EMERGENCY_NUMBER, PERCENT + searchQuery + PERCENT);
+			se7 = Restrictions.like(FATHER_NAME, PERCENT + searchQuery + PERCENT);
+			cr.add(Restrictions.or(se1, se2, se3, se4, se5, se6, se7));
+		}
+		return (Long) cr.setProjection(Projections.rowCount()).uniqueResult();
 
 	}
 }

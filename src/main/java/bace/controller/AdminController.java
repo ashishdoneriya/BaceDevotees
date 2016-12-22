@@ -16,9 +16,17 @@ import bace.dao.DevoteeDao;
 import bace.pojo.Devotee;
 import static bace.utils.Constants.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Controller
 @RequestMapping(APIS)
 public class AdminController {
+
+	private static final String RECORDS = "records";
+
+	private static final String PAGES = "pages";
 
 	@Autowired
 	DevoteeDao devoteeDao;
@@ -28,8 +36,15 @@ public class AdminController {
 	@ResponseBody
 	@RequestMapping(value = DEVOTEES, method = RequestMethod.GET)
 	public String list(HttpServletRequest request) {
-		return gson.toJson(devoteeDao.list(request.getParameter(SEARCH_QUERY), request.getParameter(PAGE_NUMBER),
-				request.getParameter(MAXIMUM_RESULTS)));
+		String searchQuery = request.getParameter(SEARCH_QUERY);
+		String pageNumber = request.getParameter(PAGE_NUMBER);
+		String maximumRows = request.getParameter(MAXIMUM_ROWS);
+		List<Devotee> list = devoteeDao.list(searchQuery, pageNumber, maximumRows);
+		long numberOfPages = devoteeDao.getNumberOfPages(searchQuery);
+		Map<String, Object> result = new HashMap<String, Object>(2);
+		result.put(PAGES, numberOfPages);
+		result.put(RECORDS, list);
+		return gson.toJson(result);
 	}
 	
 	@ResponseBody
