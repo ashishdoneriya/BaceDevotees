@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import bace.dao.DevoteeDao;
 import bace.pojo.Devotee;
@@ -24,6 +25,10 @@ import java.util.Map;
 @RequestMapping(APIS)
 public class AdminController {
 
+	private static final String ORDER2 = "order";
+
+	private static final String SORT_BY = "sortBy";
+
 	private static final String RECORDS = "records";
 
 	private static final String PAGES = "pages";
@@ -31,15 +36,18 @@ public class AdminController {
 	@Autowired
 	DevoteeDao devoteeDao;
 
-	private static Gson gson = new Gson();
+	private static Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
 
 	@ResponseBody
 	@RequestMapping(value = DEVOTEES, method = RequestMethod.GET)
 	public String list(HttpServletRequest request) {
 		String searchQuery = request.getParameter(SEARCH_QUERY);
 		String pageNumber = request.getParameter(PAGE_NUMBER);
-		String maximumRows = request.getParameter(MAXIMUM_ROWS);
-		List<Devotee> list = devoteeDao.list(searchQuery, pageNumber, maximumRows);
+		String maximumResults = request.getParameter(MAXIMUM_RESULTS);
+		String sortBy = request.getParameter(SORT_BY);
+		String order = request.getParameter(ORDER2);
+		List<Devotee> list = devoteeDao.list(searchQuery, pageNumber, maximumResults,
+				sortBy, order);
 		long numberOfPages = devoteeDao.getNumberOfPages(searchQuery);
 		Map<String, Object> result = new HashMap<String, Object>(2);
 		result.put(PAGES, numberOfPages);

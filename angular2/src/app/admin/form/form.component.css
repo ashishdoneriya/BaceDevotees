@@ -4,11 +4,29 @@
     margin-bottom: 0px;
     padding-top: 7px;
     display: inline-block;
-    font-weight: bold;
 }
 
 @media (max-width: 768px) {
     .control-label {
         text-align: left;
     }
+}
+.btn {
+	border-radius: 0px;
+	width: 100px;
+}
+input, textarea {
+	border-radius: 0px;
+}
+.dropdown-menu, ngb-datepicker {
+	min-width:225px !important;
+}
+input {
+	padding-top:4px;
+	padding-bottom:4px;
+}
+.input-group-addon {
+	width: 40px;
+	padding:4px 0px 4px 0;
+	height: 31px;
 }

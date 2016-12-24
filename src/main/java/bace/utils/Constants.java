@@ -18,7 +18,7 @@ public interface Constants {
 
 	char PERCENT = '%';
 	
-	String MAXIMUM_ROWS = "maximumRows";
+	String MAXIMUM_RESULTS = "maximumResults";
 
 	String ID2 = "id";
 

@@ -23,7 +23,9 @@ export class AdminComponent implements OnInit {
 	searchQuery: string = '';
 	currentPageNo: number = 1;
 	totalPages: number = 0;
-	maximumRows: number = 10;
+	maximumResults: number = 10;
+	sortBy: string = 'name';
+	order: string = 'ascending';
 	private searchTermStream = new Subject<string>();
 
 	constructor(private apiService: ApiService,
@@ -40,7 +42,7 @@ export class AdminComponent implements OnInit {
 		this.search();
 	}
 
-	update(query:string) {
+	update(query: string) {
 		this.searchTermStream.next(query);
 	}
 
@@ -48,7 +50,7 @@ export class AdminComponent implements OnInit {
 		if (pageNumber) {
 			this.currentPageNo = pageNumber;
 		}
-		this.apiService.list(this.searchQuery, this.currentPageNo, this.maximumRows).subscribe(data => {
+		this.apiService.list(this.searchQuery, this.currentPageNo, this.maximumResults, this.sortBy, this.order).subscribe(data => {
 			let obj = data.json();
 			this.totalPages = obj.pages;
 			this.devoteesList = obj.records;
@@ -67,6 +69,7 @@ export class AdminComponent implements OnInit {
 					this.search();
 				});
 			}
+		}, (reason) => {
 		});
 	}
 
@@ -81,6 +84,7 @@ export class AdminComponent implements OnInit {
 					this.search();
 				});
 			}
+		}, (reason) => {
 		});
 	}
 

@@ -20,28 +20,30 @@ export class ApiService {
 		this.http.post('/apis/logout', {});
 	}
 
-	list(searchQuery?: string, pageNumber?: any, maximumResults?: any) {
-		if (searchQuery || pageNumber || maximumResults) {
-			let params: URLSearchParams = new URLSearchParams();
-			if (searchQuery) {
-				params.set("searchQuery", searchQuery);
-			}
-			if (pageNumber) {
-				params.set('pageNumber', pageNumber);
-			}
-			if (maximumResults) {
-				params.set('maximumRows', maximumResults);
-			}
-			return this.http.get('/apis/devotees', { search: params });
-		} else {
-			return this.http.get('/apis/devotees');
+	list(searchQuery?: string, pageNumber?: any, maximumResults?: any, sortBy?: any, order?: any) {
+		let params: URLSearchParams = new URLSearchParams();
+		if (searchQuery) {
+			params.set("searchQuery", searchQuery);
 		}
+		if (pageNumber) {
+			params.set('pageNumber', pageNumber);
+		}
+		if (maximumResults) {
+			params.set('maximumResults', maximumResults);
+		}
+		if (sortBy) {
+			params.set('sortBy', sortBy);
+		}
+		if (order) {
+			params.set('order', order);
+		}
+		return this.http.get('/apis/devotees', { search: params });
 	}
 
 	get(id: any): Observable<Devotee> {
 		return this.http.get('/apis/devotee/' + id)
 			.map(this.extractData);
-					//	.catch(this.handleError);
+		//	.catch(this.handleError);
 	}
 
 	save(devotee: Devotee) {
@@ -55,7 +57,7 @@ export class ApiService {
 		let headers = new Headers({ 'Content-Type': 'text/html' });
 		let options = new RequestOptions({ headers: headers });
 		return this.http.delete('/apis/devotee/' + id, options)
-			.map( (res:Response) => res.text);
+			.map((res: Response) => res.text);
 	}
 
 	private extractData(res: Response) {

@@ -20,6 +20,8 @@ import static bace.utils.Constants.*;
 @Repository("devoteeDao")
 public class DevoteeDao {
 
+	private static final String ASCENDING = "ascending";
+
 	@Autowired
 	private SessionFactory sessionFactory;
 
@@ -42,7 +44,8 @@ public class DevoteeDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Devotee> list(String searchQuery, String pageNumber, String maximumResults) {
+	public List<Devotee> list(String searchQuery, String pageNumber
+			, String maximumResults, String sortBy, String order) {
 		session = sessionFactory.getCurrentSession();
 		Criteria cr = session.createCriteria(Devotee.class);
 		cr.addOrder(Order.asc(NAME));
@@ -60,6 +63,14 @@ public class DevoteeDao {
 			se6 = Restrictions.like(EMERGENCY_NUMBER, PERCENT + searchQuery + PERCENT);
 			se7 = Restrictions.like(FATHER_NAME, PERCENT + searchQuery + PERCENT);
 			cr.add(Restrictions.or(se1, se2, se3, se4, se5, se6, se7));
+		}
+		if (sortBy != null && !sortBy.isEmpty()) {
+			if (order == null || order.isEmpty()
+					|| order.equalsIgnoreCase(ASCENDING)) {
+				cr.addOrder(Order.asc(sortBy));
+			} else {
+				cr.addOrder(Order.desc(sortBy));
+			}
 		}
 		return cr.list();
 	}
