@@ -63,9 +63,9 @@ public class AdminController {
 	
 	@ResponseBody
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String saveOrUpdate(@RequestBody Devotee devotee) {
+	public String saveOrUpdate(@RequestBody String json) {
 		try {
-			devoteeDao.save(devotee);
+			devoteeDao.save(gson.fromJson(json, Devotee.class));
 			return SUCCESS;
 		} catch (Exception e) {
 			return FAILED;
