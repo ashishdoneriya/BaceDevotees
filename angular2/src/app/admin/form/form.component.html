@@ -32,10 +32,7 @@
 			<div class="form-group row">
 				<label class="col-md-4 control-label" for="dob">Date of Birth</label>
 				<div class="col-md-7 input-group">
-					<input [(ngModel)]="devotee.dob" id="dob" name="dob" type="text" placeholder="yyyy-mm-dd" ngbDatepicker #d="ngbDatepicker" class="form-control input-md">
-					<div class="input-group-addon" (click)="d.toggle()">
-						<img src="../../../assets/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
-					</div>
+					<input [(ngModel)]="devotee.dob" id="dob" name="dob" type="text" placeholder="yyyy-mm-dd" class="form-control input-md">
 				</div>
 			</div>
 
@@ -56,20 +53,14 @@
 			<div class="form-group row">
 				<label class="col-md-4 control-label" for="baceJoinDate">Bace Join Date</label>
 				<div class="col-md-7 input-group">
-					<input [(ngModel)]="devotee.baceJoinDate" id="baceJoinDate" name="baceJoinDate" type="text" placeholder="yyyy-mm-dd" ngbDatepicker #dbj="ngbDatepicker" class="form-control input-md">
-					<div class="input-group-addon" (click)="dbj.toggle()">
-						<img src="../../../assets/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
-					</div>
+					<input [(ngModel)]="devotee.baceJoinDate" id="baceJoinDate" name="baceJoinDate" type="text" placeholder="yyyy-mm-dd" class="form-control input-md">
 				</div>
 			</div>
 
 			<div class="form-group row">
 				<label class="col-md-4 control-label" for="baceLeftDate">Bace Left Date</label>
 				<div class="col-md-7 input-group">
-					<input [(ngModel)]="devotee.baceLeftDate" id="baceLeftDate" name="baceLeftDate" type="text" placeholder="yyyy-mm-dd" ngbDatepicker #dbl="ngbDatepicker" class="form-control input-md">
-					<div class="input-group-addon" (click)="dbl.toggle()">
-						<img src="../../../assets/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;" />
-					</div>
+					<input [(ngModel)]="devotee.baceLeftDate" id="baceLeftDate" name="baceLeftDate" type="text" placeholder="yyyy-mm-dd" class="form-control input-md">
 				</div>
 			</div>
 

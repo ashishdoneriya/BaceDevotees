@@ -18,8 +18,12 @@ export class LoginComponent implements OnInit {
 	}
 
 	login() {
+		if (this.password == 'haribol') {
+			this.router.navigate(['admin']);
+		} else {
+			this.password = '';
+		}
 
-		this.router.navigate(['admin']);
 	/*	this.apiService.login(this.password).subscribe(
 			result => {
 				if (result == 'success') {

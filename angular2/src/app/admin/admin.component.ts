@@ -96,4 +96,5 @@ export class AdminComponent implements OnInit {
 		this.apiService.logout();
 		this.router.navigate(['login']);
 	}
+
 }

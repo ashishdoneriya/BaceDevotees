@@ -2,6 +2,8 @@ package bace.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,11 +14,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 
 import bace.dao.DevoteeDao;
 import bace.pojo.Devotee;
 import static bace.utils.Constants.*;
 
+import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,10 +44,30 @@ public class AdminController {
 
 	private static final String PAGES = "pages";
 
+	private static final Logger LOG = LogManager.getLogger(AdminController.class);
+
 	@Autowired
 	DevoteeDao devoteeDao;
 
-	private static Gson gson = new GsonBuilder().setDateFormat("yyyy-mm-dd").create();
+	private static Gson gson;
+
+	static {
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+			@Override
+			public Date deserialize(JsonElement json, Type type, JsonDeserializationContext context)
+					throws JsonParseException {
+				try {
+					return dateFormat.parse(json.getAsString());
+				} catch (Exception e) {
+					return null;
+				}
+			}
+		});
+		gson = gsonBuilder.setDateFormat("yyyy-mm-dd").create();
+	}
 
 	@ResponseBody
 	@RequestMapping(value = DEVOTEES, method = RequestMethod.GET)
@@ -46,21 +77,25 @@ public class AdminController {
 		String maximumResults = request.getParameter(MAXIMUM_RESULTS);
 		String sortBy = request.getParameter(SORT_BY);
 		String order = request.getParameter(ORDER2);
-		List<Devotee> list = devoteeDao.list(searchQuery, pageNumber, maximumResults,
-				sortBy, order);
-		long numberOfPages = devoteeDao.getNumberOfPages(searchQuery);
+		List<Devotee> list = devoteeDao.list(searchQuery, pageNumber, maximumResults, sortBy, order);
+		long numberOfPages;
+		if (maximumResults != null && !maximumResults.isEmpty()) {
+			numberOfPages = 1;
+		} else {
+			numberOfPages = devoteeDao.getNumberOfPages(searchQuery) / Long.parseLong(maximumResults);
+		}
 		Map<String, Object> result = new HashMap<String, Object>(2);
 		result.put(PAGES, numberOfPages);
 		result.put(RECORDS, list);
 		return gson.toJson(result);
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = DEVOTEE_ID, method = RequestMethod.GET)
 	public String get(@PathVariable(ID2) int id) {
 		return gson.toJson(devoteeDao.get(id));
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
 	public String saveOrUpdate(@RequestBody String json) {
@@ -68,10 +103,11 @@ public class AdminController {
 			devoteeDao.save(gson.fromJson(json, Devotee.class));
 			return SUCCESS;
 		} catch (Exception e) {
+			LOG.error("Unable to save record, json = " + json, e);
 			return FAILED;
 		}
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = DEVOTEE_ID, method = RequestMethod.DELETE)
 	public String delete(@PathVariable(ID2) int id) {
@@ -79,10 +115,9 @@ public class AdminController {
 			devoteeDao.delete(id);
 			return SUCCESS;
 		} catch (Exception e) {
+			LOG.error("Unable to delete record, id = " + id, e);
 			return FAILED;
 		}
 	}
-	
-	
 
 }

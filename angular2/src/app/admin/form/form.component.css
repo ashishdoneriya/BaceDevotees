@@ -1,32 +1,38 @@
 .control-label {
-    text-align: right;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    padding-top: 7px;
-    display: inline-block;
+	text-align: right;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 7px;
+	display: inline-block;
 }
 
 @media (max-width: 768px) {
-    .control-label {
-        text-align: left;
-    }
+	.control-label {
+		text-align: left;
+	}
 }
+
 .btn {
-	border-radius: 0px;
 	width: 100px;
 }
-input, textarea {
+
+input,
+textarea {
 	border-radius: 0px;
 }
-.dropdown-menu, ngb-datepicker {
-	min-width:225px !important;
+
+.dropdown-menu,
+ngb-datepicker {
+	min-width: 225px !important;
 }
+
 input {
-	padding-top:4px;
-	padding-bottom:4px;
+	padding-top: 4px;
+	padding-bottom: 4px;
 }
+
 .input-group-addon {
 	width: 40px;
-	padding:4px 0px 4px 0;
+	padding: 4px 0px 4px 0;
 	height: 31px;
 }

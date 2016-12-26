@@ -1,27 +1,36 @@
 a {
 	cursor: pointer;
 }
-.btn {
-	border-radius: 0px;
-}
+
 input {
 	border-radius: 0px;
 }
+
 i {
 	margin-right: 10px;
 }
+
 .fa-user {
 	font-size: 20px;
 }
+
 .form-control:focus {
-	border-color:#d9d9d9;
+	border-color: #d9d9d9;
 }
+
 .dropdown-menu {
-	min-width:225px;
+	min-width: 225px;
 }
+
 select {
 	border-radius: 0px !important;
-	padding-top:4px !important;
-	padding-bottom:4px !important;
+	padding-top: 4px !important;
+	padding-bottom: 4px !important;
 	height: 30px !important;
+}
+
+th,
+td {
+	text-align: center;
+	vertical-align: middle;
 }

@@ -56,18 +56,20 @@
 						<th>Name</th>
 						<th>Mobile</th>
 						<th>Email</th>
+						<th>Date of Birth</th>
+						<th>Bace Joining Date</th>
 						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr *ngFor="let devotee of devoteesList; let i = index">
-						<th scope="row">{{(currentPageNo - 1) * maximumRows + i + 1}}</th>
-						<td>
-							<a (click)="edit(devotee)">{{devotee.name}}</a>
-						</td>
+						<th scope="row">{{(currentPageNo - 1) * maximumResults + i + 1}}.</th>
+						<td><a (click)="edit(devotee)" style="1px dotted #373a3c">{{devotee.name}}</a></td>
 						<td>{{devotee.mobileNumber}}</td>
 						<td>{{devotee.email}}</td>
-						<td>
+						<td>{{devotee.dob}}</td>
+						<td>{{devotee.baceJoinDate}}</td>
+						<td style="text-align:right;">
 							<button (click)="edit(devotee)" type="button" style="margin-left:10px;" class="btn btn-info">
 								<i class="fa fa-pencil" aria-hidden="true"></i>Edit</button>
 							<button (click)="delete(devotee.id)" type="button" style="margin-left:10px;" class="btn btn-danger">
