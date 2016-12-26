@@ -44,6 +44,18 @@
 					<option>200</option>
 				</select>
 			</div>
+			<div class="form-group" style="margin-right:20px">
+				<div class="input-group" data-toggle="dropdown">
+					<label for="filterColumns" data-toggle="dropdown" style="font-weight:bold;cursor:pointer;">Columns</label>
+					<i style="cursor:pointer;font-size: 25px;margin-left: 10px;vertical-align: middle;" class="fa fa-caret-square-o-down" data-toggle="dropdown" aria-hidden="true" id="filterColumns"></i>
+					<ul role="menu" class="dropdown-menu" (click)="$event.stopPropagation()">
+						<li *ngFor="let column of columns">
+							<input type="checkbox" name="column"  [(ngModel)]="column.isActive">
+							<span class="lbl">{{column}}</span>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</form>
 	</div>
 	<div class="row" style="margin-top:25px;">
@@ -64,16 +76,16 @@
 				<tbody>
 					<tr *ngFor="let devotee of devoteesList; let i = index">
 						<th scope="row">{{(currentPageNo - 1) * maximumResults + i + 1}}.</th>
-						<td><a (click)="edit(devotee)" style="1px dotted #373a3c">{{devotee.name}}</a></td>
+						<td>
+							<a (click)="edit(devotee)" style="1px dotted #373a3c">{{devotee['name']}}</a>
+						</td>
 						<td>{{devotee.mobileNumber}}</td>
 						<td>{{devotee.email}}</td>
 						<td>{{devotee.dob}}</td>
 						<td>{{devotee.baceJoinDate}}</td>
 						<td style="text-align:right;">
-							<button (click)="edit(devotee)" type="button" style="margin-left:10px;" class="btn btn-info">
-								<i class="fa fa-pencil" aria-hidden="true"></i>Edit</button>
-							<button (click)="delete(devotee.id)" type="button" style="margin-left:10px;" class="btn btn-danger">
-								<i class="fa fa-trash" aria-hidden="true"></i>Delete</button>
+							<button (click)="edit(devotee)" type="button" style="padding: 4px 8px;" class="btn btn-info">Edit</button>
+							<button (click)="delete(devotee.id)" type="button" style="margin-left:10px;padding: 4px 8px;" class="btn btn-danger">Delete</button>
 						</td>
 					</tr>
 				</tbody>

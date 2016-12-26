@@ -1,5 +1,24 @@
 package bace.controller;
 
+import static bace.utils.Constants.APIS;
+import static bace.utils.Constants.DEVOTEES;
+import static bace.utils.Constants.DEVOTEE_ID;
+import static bace.utils.Constants.FAILED;
+import static bace.utils.Constants.ID2;
+import static bace.utils.Constants.MAXIMUM_RESULTS;
+import static bace.utils.Constants.PAGE_NUMBER;
+import static bace.utils.Constants.SAVE;
+import static bace.utils.Constants.SEARCH_QUERY;
+import static bace.utils.Constants.SUCCESS;
+
+import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
@@ -21,16 +40,6 @@ import com.google.gson.JsonParseException;
 
 import bace.dao.DevoteeDao;
 import bace.pojo.Devotee;
-import static bace.utils.Constants.*;
-
-import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping(APIS)
@@ -54,7 +63,7 @@ public class AdminController {
 	static {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 
 			@Override
 			public Date deserialize(JsonElement json, Type type, JsonDeserializationContext context)

@@ -134,5 +134,13 @@ public class Devotee {
 	public void setBaceJoinDate(Date baceJoinDate) {
 		this.baceJoinDate = baceJoinDate;
 	}
+	
+	@Override
+	public String toString() {
+		return "Devotee [id=" + id + ", name=" + name + ", dob=" + dob + ", permanentAddress=" + permanentAddress
+				+ ", currentAddress=" + currentAddress + ", mobileNumber=" + mobileNumber + ", email=" + email
+				+ ", fatherName=" + fatherName + ", emergencyNumber=" + emergencyNumber + ", baceJoinDate="
+				+ baceJoinDate + ", baceLeftDate=" + baceLeftDate + "]";
+	}
 
 }

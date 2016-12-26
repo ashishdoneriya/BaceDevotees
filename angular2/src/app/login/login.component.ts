@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 	}
 
 	login() {
-		if (this.password == 'haribol') {
+		if (this.password == '') {
 			this.router.navigate(['admin']);
 		} else {
 			this.password = '';

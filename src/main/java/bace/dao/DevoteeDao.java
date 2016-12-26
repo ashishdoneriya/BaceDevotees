@@ -27,6 +27,8 @@ public class DevoteeDao {
 
 	private Session session;
 	
+	private SimpleExpression se1, se2, se3, se4, se5, se6, se7;
+	
 	public int save(Devotee devotee) {
 		session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(devotee);
@@ -48,13 +50,12 @@ public class DevoteeDao {
 			, String maximumResults, String sortBy, String order) {
 		session = sessionFactory.getCurrentSession();
 		Criteria cr = session.createCriteria(Devotee.class);
-		cr.addOrder(Order.asc(NAME));
 		if (!isNullOrEmpty(pageNumber) && !isNullOrEmpty(maximumResults)) {
-			cr.setMaxResults(Integer.parseInt(maximumResults));
-			cr.setFirstResult(Integer.parseInt(pageNumber) - 1);
+			int max = Integer.parseInt(maximumResults);
+			cr.setMaxResults(max);
+			cr.setFirstResult((Integer.parseInt(pageNumber) - 1) * max);
 		}
 		if (searchQuery != null && !searchQuery.isEmpty()) {
-			SimpleExpression se1, se2, se3, se4, se5, se6, se7;
 			se1 = Restrictions.like(NAME, PERCENT + searchQuery + PERCENT);
 			se2 = Restrictions.like(PERMANENT_ADDRESS, PERCENT + searchQuery + PERCENT);
 			se3 = Restrictions.like(CURRENT_ADDRESS, PERCENT + searchQuery + PERCENT);
@@ -71,8 +72,10 @@ public class DevoteeDao {
 			} else {
 				cr.addOrder(Order.desc(sortBy));
 			}
+		} else {
+			cr.addOrder(Order.asc(NAME));
 		}
-		return cr.list();
+		return (List<Devotee>) cr.list();
 	}
 	
 	private boolean isNullOrEmpty(String str) {

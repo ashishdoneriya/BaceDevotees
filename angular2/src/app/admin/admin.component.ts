@@ -26,6 +26,8 @@ export class AdminComponent implements OnInit {
 	maximumResults: number = 10;
 	sortBy: string = 'name';
 	order: string = 'ascending';
+	columns =
+["Name","Bace Join Date","Bace Left Date","Current Address","Date of Birth","Email","Emergency Number","Father's Name","Mobile Number","Permanent Address"];
 	private searchTermStream = new Subject<string>();
 
 	constructor(private apiService: ApiService,
