@@ -78,6 +78,7 @@ export class AdminComponent implements OnInit {
 		this.searchTermStream
 			.debounceTime(300)
 			.distinctUntilChanged().subscribe((term: string) => {
+				this.currentPageNo = 1;
 				this.search();
 			});
 		this.search();
