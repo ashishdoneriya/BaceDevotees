@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
 import "rxjs/add/operator/switchMap";
 
+import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
 import { NgbModal, NgbModalRef, NgbModalOptions, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 import { Devotee } from '../devotee';
@@ -27,29 +29,28 @@ export class AdminComponent implements OnInit {
 	sortBy: string = 'name';
 	order: string = 'ascending';
 
-	cSerialNumber:boolean = true;
-	cName:boolean = true;
-	cbaceJoinDate:boolean = true;
-	cbaceLeftDate:boolean = false;
-	ccurrentAddress:boolean = false;
-	cdob:boolean = true;
-	cemail:boolean = true;
-	cemergencyNumber:boolean = false;
-	cfatherName:boolean = false;
-	cmobileNumber:boolean = true;
-	cpermanentAddress:boolean = false;
-	cActions:boolean = true;
+	cSerialNumber: boolean = true;
+	cName: boolean = true;
+	cbaceJoinDate: boolean = true;
+	cbaceLeftDate: boolean = false;
+	ccurrentAddress: boolean = false;
+	cdob: boolean = true;
+	cemail: boolean = true;
+	cemergencyNumber: boolean = false;
+	cfatherName: boolean = false;
+	cmobileNumber: boolean = true;
+	cpermanentAddress: boolean = false;
+	cActions: boolean = true;
+
+	toastOptions: ToastOptions;
 
 	private searchTermStream = new Subject<string>();
 
 	constructor(private apiService: ApiService,
 		private router: Router,
-		private modalService: NgbModal) {
-		this.searchTermStream
-			.debounceTime(300)
-			.distinctUntilChanged().subscribe((term: string) => {
-				this.search();
-			});
+		private modalService: NgbModal,
+		private toastyService: ToastyService,
+		private toastyConfig: ToastyConfig) {
 	}
 
 	updateSortOrder(property) {
@@ -67,6 +68,18 @@ export class AdminComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.toastyConfig.theme = 'material';
+		this.toastOptions = {
+			title: '',
+			msg: '',
+			showClose: true,
+			timeout: 3000
+		};
+		this.searchTermStream
+			.debounceTime(300)
+			.distinctUntilChanged().subscribe((term: string) => {
+				this.search();
+			});
 		this.search();
 	}
 
@@ -82,6 +95,9 @@ export class AdminComponent implements OnInit {
 			let obj = data.json();
 			this.totalResults = obj.totalResults;
 			this.devoteesList = obj.records;
+		}, error => {
+			this.toastOptions.msg = 'Unable to fetch data.';
+			this.toastyService.error(this.toastOptions);
 		});
 	}
 
@@ -94,7 +110,12 @@ export class AdminComponent implements OnInit {
 		modalRef.result.then(result => {
 			if (result == 'save') {
 				this.apiService.save(devotee).subscribe(message => {
+					this.toastOptions.title = 'Record Added';
+					this.toastyService.success(this.toastOptions);
 					this.search();
+				}, error => {
+					this.toastOptions.msg = 'Unable to add the record.';
+					this.toastyService.error(this.toastOptions);
 				});
 			}
 		}, (reason) => {
@@ -109,7 +130,12 @@ export class AdminComponent implements OnInit {
 		modalRef.result.then(result => {
 			if (result == 'save') {
 				this.apiService.save(devotee).subscribe(message => {
+					this.toastOptions.title = 'Record Updated';
+					this.toastyService.success(this.toastOptions);
 					this.search();
+				}, error => {
+					this.toastOptions.msg = 'Unable to update the record.';
+					this.toastyService.error(this.toastOptions);
 				});
 			}
 		}, (reason) => {
@@ -117,7 +143,14 @@ export class AdminComponent implements OnInit {
 	}
 
 	delete(id) {
-		this.apiService.delete(id).subscribe(() => this.search());
+		this.apiService.delete(id).subscribe(() => {
+			this.toastOptions.title = 'Record Deleted';
+			this.toastyService.success(this.toastOptions);
+			this.search();
+		}, error => {
+			this.toastOptions.msg = 'Unable to delete the record.';
+			this.toastyService.error(this.toastOptions);
+		});
 	}
 
 	logout() {

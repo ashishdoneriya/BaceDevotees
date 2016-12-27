@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule }   from '@angular/forms';
 import { HttpModule, JsonpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
+import {ToastyModule} from 'ng2-toasty';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
@@ -29,6 +30,7 @@ const appRoutes: Routes = [
 		JsonpModule,
 		FormsModule,
 		NgbModule.forRoot(),
+		ToastyModule.forRoot(),
 		RouterModule.forRoot(appRoutes)
 	],
 	providers: [ApiService],
