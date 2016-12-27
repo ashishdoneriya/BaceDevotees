@@ -126,11 +126,12 @@ export class AdminComponent implements OnInit {
 	edit(devotee: Devotee) {
 		let modelOption: NgbModalOptions = { backdrop: false, keyboard: true };
 		let modalRef: NgbModalRef = this.modalService.open(FormComponent, modelOption);
-		modalRef.componentInstance.devotee = devotee;
+		let temp = this.copy(devotee);
+		modalRef.componentInstance.devotee = temp;
 		modalRef.componentInstance.type = "Update";
 		modalRef.result.then(result => {
 			if (result == 'save') {
-				this.apiService.save(devotee).subscribe(message => {
+				this.apiService.save(temp).subscribe(message => {
 					this.toastOptions.title = 'Record Updated';
 					this.toastyService.success(this.toastOptions);
 					this.search();
@@ -157,6 +158,22 @@ export class AdminComponent implements OnInit {
 	logout() {
 		this.apiService.logout();
 		this.router.navigate(['login']);
+	}
+
+	copy(devotee: Devotee): Devotee {
+		let newDevotee: Devotee = new Devotee();
+		newDevotee.id = devotee.id;
+		newDevotee.name = devotee.name;
+		newDevotee.baceJoinDate = devotee.baceJoinDate;
+		newDevotee.baceLeftDate = devotee.baceLeftDate;
+		newDevotee.currentAddress = devotee.currentAddress;
+		newDevotee.dob = devotee.dob;
+		newDevotee.email = devotee.email;
+		newDevotee.emergencyNumber = devotee.emergencyNumber;
+		newDevotee.fatherName = devotee.fatherName;
+		newDevotee.mobileNumber = devotee.mobileNumber;
+		newDevotee.permanentAddress = devotee.permanentAddress;
+		return newDevotee;
 	}
 
 }

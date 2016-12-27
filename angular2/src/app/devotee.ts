@@ -1,5 +1,5 @@
 export class Devotee {
-	id?: string;
+	id?: number;
 	name: string;
 	baceJoinDate?: String;
 	baceLeftDate?: String;
