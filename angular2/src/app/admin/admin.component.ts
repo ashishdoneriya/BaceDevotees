@@ -97,6 +97,7 @@ export class AdminComponent implements OnInit {
 			this.totalResults = obj.totalResults;
 			this.devoteesList = obj.records;
 		}, error => {
+			this.toastOptions.title = '';
 			this.toastOptions.msg = 'Unable to fetch data.';
 			this.toastyService.error(this.toastOptions);
 		});
@@ -112,9 +113,11 @@ export class AdminComponent implements OnInit {
 			if (result == 'save') {
 				this.apiService.save(devotee).subscribe(message => {
 					this.toastOptions.title = 'Record Added';
+					this.toastOptions.msg = '';
 					this.toastyService.success(this.toastOptions);
 					this.search();
 				}, error => {
+					this.toastOptions.title = '';
 					this.toastOptions.msg = 'Unable to add the record.';
 					this.toastyService.error(this.toastOptions);
 				});
@@ -133,9 +136,11 @@ export class AdminComponent implements OnInit {
 			if (result == 'save') {
 				this.apiService.save(temp).subscribe(message => {
 					this.toastOptions.title = 'Record Updated';
+					this.toastOptions.msg = '';
 					this.toastyService.success(this.toastOptions);
 					this.search();
 				}, error => {
+					this.toastOptions.title = '';
 					this.toastOptions.msg = 'Unable to update the record.';
 					this.toastyService.error(this.toastOptions);
 				});
@@ -147,6 +152,7 @@ export class AdminComponent implements OnInit {
 	delete(id) {
 		this.apiService.delete(id).subscribe(() => {
 			this.toastOptions.title = 'Record Deleted';
+			this.toastOptions.msg = '';
 			this.toastyService.success(this.toastOptions);
 			this.search();
 		}, error => {
