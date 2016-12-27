@@ -88,10 +88,15 @@ public class AdminController {
 		String order = request.getParameter(ORDER2);
 		List<Devotee> list = devoteeDao.list(searchQuery, pageNumber, maximumResults, sortBy, order);
 		long numberOfPages;
-		if (maximumResults != null && !maximumResults.isEmpty()) {
+		if (maximumResults == null || maximumResults.isEmpty()) {
 			numberOfPages = 1;
 		} else {
-			numberOfPages = devoteeDao.getNumberOfPages(searchQuery) / Long.parseLong(maximumResults);
+			long totalResults = devoteeDao.getTotalResults(searchQuery);
+			long maxResults = Long.parseLong(maximumResults);
+			numberOfPages = totalResults / maxResults;
+			if (totalResults % maxResults > 0) {
+				numberOfPages ++;
+			}
 		}
 		Map<String, Object> result = new HashMap<String, Object>(2);
 		result.put(PAGES, numberOfPages);

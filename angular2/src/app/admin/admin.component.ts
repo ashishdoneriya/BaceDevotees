@@ -26,8 +26,20 @@ export class AdminComponent implements OnInit {
 	maximumResults: number = 10;
 	sortBy: string = 'name';
 	order: string = 'ascending';
-	columns =
-["Name","Bace Join Date","Bace Left Date","Current Address","Date of Birth","Email","Emergency Number","Father's Name","Mobile Number","Permanent Address"];
+
+	cSerialNumber:boolean = true;
+	cName:boolean = true;
+	cbaceJoinDate:boolean = true;
+	cbaceLeftDate:boolean = false;
+	ccurrentAddress:boolean = false;
+	cdob:boolean = true;
+	cemail:boolean = true;
+	cemergencyNumber:boolean = false;
+	cfatherName:boolean = false;
+	cmobileNumber:boolean = true;
+	cpermanentAddress:boolean = false;
+	cActions:boolean = true;
+
 	private searchTermStream = new Subject<string>();
 
 	constructor(private apiService: ApiService,
@@ -38,6 +50,20 @@ export class AdminComponent implements OnInit {
 			.distinctUntilChanged().subscribe((term: string) => {
 				this.search();
 			});
+	}
+
+	updateSortOrder(property) {
+		if (this.sortBy == property) {
+			if (this.order == 'ascending') {
+				this.order = 'descending';
+			} else {
+				this.order = 'ascending';
+			}
+		} else {
+			this.sortBy = property;
+			this.order = 'ascending';
+		}
+		this.search();
 	}
 
 	ngOnInit() {

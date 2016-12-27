@@ -1,26 +1,27 @@
 export class Devotee {
 	id?: string;
 	name: string;
-	dob?: String;
-	fatherName?: string;
-	permanentAddress?: string;
-	currentAddress?: string;
-	mobileNumber?: string;
-	email?: string;
-	emergencyNumber?: string;
 	baceJoinDate?: String;
 	baceLeftDate?: String;
+	currentAddress?: string;
+	dob?: String;
+	email?: string;
+	emergencyNumber?: string;
+	fatherName?: string;
+	mobileNumber?: string;
+	permanentAddress?: string;
 
 	constructor() {
 		this.name = '';
-		this.fatherName = '';
-		this.permanentAddress = '';
-		this.currentAddress = '';
-		this.mobileNumber = '';
-		this.email = '';
-		this.emergencyNumber = '';
-		this.dob = '';
 		this.baceJoinDate = '';
 		this.baceLeftDate = '';
+		this.currentAddress = '';
+		this.dob = '';
+		this.email = '';
+		this.emergencyNumber = '';
+		this.fatherName = '';
+		this.mobileNumber = '';
+		this.permanentAddress = '';
+
 	}
 }

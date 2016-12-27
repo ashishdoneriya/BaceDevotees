@@ -3,6 +3,7 @@ package bace.dao;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.NullPrecedence;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
@@ -68,9 +69,9 @@ public class DevoteeDao {
 		if (sortBy != null && !sortBy.isEmpty()) {
 			if (order == null || order.isEmpty()
 					|| order.equalsIgnoreCase(ASCENDING)) {
-				cr.addOrder(Order.asc(sortBy));
+				cr.addOrder(Order.asc(sortBy).nulls(NullPrecedence.LAST));
 			} else {
-				cr.addOrder(Order.desc(sortBy));
+				cr.addOrder(Order.desc(sortBy).nulls(NullPrecedence.LAST));
 			}
 		} else {
 			cr.addOrder(Order.asc(NAME));
@@ -85,10 +86,9 @@ public class DevoteeDao {
 		return false;
 	}
 	
-	public long getNumberOfPages(String searchQuery) {
+	public long getTotalResults(String searchQuery) {
 		session = sessionFactory.getCurrentSession();
 		Criteria cr = session.createCriteria(Devotee.class);
-		cr.addOrder(Order.asc(NAME));
 		if (searchQuery != null && !searchQuery.isEmpty()) {
 			SimpleExpression se1, se2, se3, se4, se5, se6, se7;
 			se1 = Restrictions.like(NAME, PERCENT + searchQuery + PERCENT);
@@ -100,7 +100,7 @@ public class DevoteeDao {
 			se7 = Restrictions.like(FATHER_NAME, PERCENT + searchQuery + PERCENT);
 			cr.add(Restrictions.or(se1, se2, se3, se4, se5, se6, se7));
 		}
-		return (Long) cr.setProjection(Projections.rowCount()).uniqueResult();
+		return (long) cr.setProjection(Projections.rowCount()).uniqueResult();
 
 	}
 }
