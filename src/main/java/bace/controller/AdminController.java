@@ -45,13 +45,13 @@ import bace.pojo.Devotee;
 @RequestMapping(APIS)
 public class AdminController {
 
+	private static final String TOTAL_RESULTS = "totalResults";
+
 	private static final String ORDER2 = "order";
 
 	private static final String SORT_BY = "sortBy";
 
 	private static final String RECORDS = "records";
-
-	private static final String PAGES = "pages";
 
 	private static final Logger LOG = LogManager.getLogger(AdminController.class);
 
@@ -87,19 +87,8 @@ public class AdminController {
 		String sortBy = request.getParameter(SORT_BY);
 		String order = request.getParameter(ORDER2);
 		List<Devotee> list = devoteeDao.list(searchQuery, pageNumber, maximumResults, sortBy, order);
-		long numberOfPages;
-		if (maximumResults == null || maximumResults.isEmpty()) {
-			numberOfPages = 1;
-		} else {
-			long totalResults = devoteeDao.getTotalResults(searchQuery);
-			long maxResults = Long.parseLong(maximumResults);
-			numberOfPages = totalResults / maxResults;
-			if (totalResults % maxResults > 0) {
-				numberOfPages ++;
-			}
-		}
 		Map<String, Object> result = new HashMap<String, Object>(2);
-		result.put(PAGES, numberOfPages);
+		result.put(TOTAL_RESULTS, devoteeDao.getTotalResults(searchQuery));
 		result.put(RECORDS, list);
 		return gson.toJson(result);
 	}

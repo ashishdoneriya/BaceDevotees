@@ -22,7 +22,7 @@ export class AdminComponent implements OnInit {
 	devoteesList: Devotee[];
 	searchQuery: string = '';
 	currentPageNo: number = 1;
-	totalPages: number = 0;
+	totalResults: number = 0;
 	maximumResults: number = 10;
 	sortBy: string = 'name';
 	order: string = 'ascending';
@@ -80,7 +80,7 @@ export class AdminComponent implements OnInit {
 		}
 		this.apiService.list(this.searchQuery, this.currentPageNo, this.maximumResults, this.sortBy, this.order).subscribe(data => {
 			let obj = data.json();
-			this.totalPages = obj.pages;
+			this.totalResults = obj.totalResults;
 			this.devoteesList = obj.records;
 		});
 	}

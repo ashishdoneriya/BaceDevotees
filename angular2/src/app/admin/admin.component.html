@@ -112,7 +112,7 @@
 						<th [hidden]="!cName" (click)="updateSortOrder('name')" style="cursor:pointer">Name</th>
 						<th [hidden]="!cmobileNumber">Mobile Number</th>
 						<th [hidden]="!cemail">Email</th>
-						<th [hidden]="!cdob" (click)="updateSortOrder('dob')">Date of Birth</th>
+						<th [hidden]="!cdob" (click)="updateSortOrder('dob')" style="cursor:pointer">Date of Birth</th>
 						<th [hidden]="!cbaceJoinDate" (click)="updateSortOrder('baceJoinDate')" style="cursor:pointer">Bace Joining Date</th>
 						<th [hidden]="!cbaceLeftDate" (click)="updateSortOrder('baceLeftDate')" style="cursor:pointer">Bace Left Date</th>
 						<th [hidden]="!cfatherName">Father's Name</th>
@@ -144,7 +144,7 @@
 			</table>
 		</div>
 		<div class="col-lg-12" style="text-align:center" [hidden]="devoteesList == undefined || devoteesList.length == 0">
-			<ngb-pagination [collectionSize]="totalPages" [boundaryLinks]="true" [directionLinks]="true" [maxSize]="10" [page]="currentPageNo" [pageSize]="maximumResults" (pageChange)="search($event)"></ngb-pagination>
+			<ngb-pagination [collectionSize]="totalResults" [boundaryLinks]="true" [directionLinks]="true" [maxSize]="10" [page]="currentPageNo" [pageSize]="maximumResults" (pageChange)="search($event)"></ngb-pagination>
 		</div>
 	</div>
 </div>
