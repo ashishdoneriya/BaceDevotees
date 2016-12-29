@@ -135,12 +135,20 @@ public class Devotee {
 		this.baceJoinDate = baceJoinDate;
 	}
 	
+	public Date getBaceLeftDate() {
+		return baceLeftDate;
+	}
+
+	public void setBaceLeftDate(Date baceLeftDate) {
+		this.baceLeftDate = baceLeftDate;
+	}
+
 	@Override
 	public String toString() {
 		return "Devotee [id=" + id + ", name=" + name + ", dob=" + dob + ", permanentAddress=" + permanentAddress
 				+ ", currentAddress=" + currentAddress + ", mobileNumber=" + mobileNumber + ", email=" + email
 				+ ", fatherName=" + fatherName + ", emergencyNumber=" + emergencyNumber + ", baceJoinDate="
-				+ baceJoinDate + ", baceLeftDate=" + baceLeftDate + "]";
+				+ baceJoinDate + ", baceLeftDate=" + getBaceLeftDate() + "]";
 	}
 
 }

@@ -37,6 +37,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
 import bace.dao.DevoteeDao;
 import bace.pojo.Devotee;
@@ -92,12 +93,14 @@ public class AdminController {
 		result.put(RECORDS, list);
 		return gson.toJson(result);
 	}
-	
-	@RequestMapping(value = DEVOTEES, method = RequestMethod.GET)
+
 	public void downloadExcel(HttpServletRequest request) {
 		String searchQuery = request.getParameter(SEARCH_QUERY);
 		String sortBy = request.getParameter(SORT_BY);
 		String order = request.getParameter(ORDER2);
+		String sColumnsList = request.getParameter("columns");
+		Type type = new TypeToken<List<String>>(){}.getType();
+		List<String> columns = gson.fromJson(sColumnsList, type);
 		List<Devotee> list = devoteeDao.list(searchQuery, null, null, sortBy, order);
 		
 	}
