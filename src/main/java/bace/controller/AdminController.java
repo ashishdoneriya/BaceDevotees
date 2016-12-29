@@ -92,6 +92,15 @@ public class AdminController {
 		result.put(RECORDS, list);
 		return gson.toJson(result);
 	}
+	
+	@RequestMapping(value = DEVOTEES, method = RequestMethod.GET)
+	public void downloadExcel(HttpServletRequest request) {
+		String searchQuery = request.getParameter(SEARCH_QUERY);
+		String sortBy = request.getParameter(SORT_BY);
+		String order = request.getParameter(ORDER2);
+		List<Devotee> list = devoteeDao.list(searchQuery, null, null, sortBy, order);
+		
+	}
 
 	@ResponseBody
 	@RequestMapping(value = DEVOTEE_ID, method = RequestMethod.GET)
