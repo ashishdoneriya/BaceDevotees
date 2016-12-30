@@ -1,19 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Http, Response, URLSearchParams, Headers, RequestOptions, ResponseContentType } from '@angular/http';
-
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
 import "rxjs/add/operator/switchMap";
 
-import { ToastyService, ToastyConfig, ToastOptions, ToastData } from 'ng2-toasty';
-import { NgbModal, NgbModalRef, NgbModalOptions, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import {
+	ToastyService,
+	ToastyConfig,
+	ToastOptions,
+	ToastData
+} from 'ng2-toasty';
+
+import {
+	NgbModal,
+	NgbModalRef,
+	NgbModalOptions,
+	ModalDismissReasons
+} from '@ng-bootstrap/ng-bootstrap';
 
 import { Devotee } from '../devotee';
 import { FormComponent } from './form/form.component';
 import { ApiService } from '../api.service';
+
+export class Column {
+	name: string;
+	id: string;
+	isSelected: boolean;
+}
 
 @Component({
 	selector: 'app-admin',
@@ -31,17 +47,59 @@ export class AdminComponent implements OnInit {
 	order: string = 'ascending';
 
 	cSerialNumber: boolean = true;
-	cName: boolean = true;
-	cbaceJoinDate: boolean = true;
-	cbaceLeftDate: boolean = false;
-	ccurrentAddress: boolean = false;
-	cdob: boolean = true;
-	cemail: boolean = true;
-	cemergencyNumber: boolean = false;
-	cfatherName: boolean = false;
-	cmobileNumber: boolean = true;
-	cpermanentAddress: boolean = false;
 	cActions: boolean = true;
+	columnsList: Array<Column> = [
+		{
+			name: "Name",
+			id: "name",
+			isSelected: true
+		},
+		{
+			name: "Mobile Number",
+			id: "mobileNumber",
+			isSelected: true
+		},
+		{
+			name: "Email",
+			id: "email",
+			isSelected: true
+		},
+		{
+			name: "Father's Name",
+			id: "fatherName",
+			isSelected: false
+		},
+		{
+			name: "Emergency Number",
+			id: "emergencyNumber",
+			isSelected: false
+		},
+		{
+			name: "Current Address",
+			id: "currentAddress",
+			isSelected: false
+		},
+		{
+			name: "Permanent Address",
+			id: "permanentAddress",
+			isSelected: false
+		},
+		{
+			name: "Date of Birth",
+			id: "dob",
+			isSelected: true
+		},
+		{
+			name: "Bace Join Date",
+			id: "baceJoinDate",
+			isSelected: true
+		},
+		{
+			name: "Bace Left Date",
+			id: "baceLeftDate",
+			isSelected: false
+		}
+	];
 
 	toastOptions: ToastOptions;
 
@@ -169,83 +227,46 @@ export class AdminComponent implements OnInit {
 	}
 
 	download() {
-		let selectedColumns: Array<string> = this.getSelectedColumns();
-		if (selectedColumns.length == 0) {
-			this.toastOptions.title = '';
-			this.toastOptions.msg = 'Please select atleast one column.';
-			this.toastyService.info(this.toastOptions);
-			return;
-		}
 		if (this.devoteesList == null || this.devoteesList.length == 0) {
 			this.toastOptions.title = '';
 			this.toastOptions.msg = 'No data to download.';
 			this.toastyService.info(this.toastOptions);
 			return;
 		}
-		this.apiService.download(this.searchQuery, this.sortBy, this.order, selectedColumns)
-			.subscribe(data => window.open(data.url)),//console.log(data),
+		let selectedColumns: Array<string> = this.getSelectedColumns();
+		if (selectedColumns.length == 0) {
+			this.toastOptions.title = '';
+			this.toastOptions.msg = 'Please select atleast one field.';
+			this.toastyService.info(this.toastOptions);
+			return;
+		}
+		this.apiService
+			.download(this.searchQuery, this.sortBy, this.order, selectedColumns)
+			.subscribe(
+			data => window.open(data.url),
 			error => {
 				this.toastOptions.title = 'Unable to download';
 				this.toastOptions.msg = error;
 				this.toastyService.error(this.toastOptions);
-			}));
-	}
-	downloadFile(data: Response) {
-		//		var blob = new Blob([data.url], { type: 'text/xlsx' });
-		//	var url = window.URL.createObjectURL(data.url);
-		window.open(data.url);
+			});
 	}
 
 	copy(devotee: Devotee): Devotee {
 		let newDevotee: Devotee = new Devotee();
 		newDevotee.id = devotee.id;
-		newDevotee.name = devotee.name;
-		newDevotee.baceJoinDate = devotee.baceJoinDate;
-		newDevotee.baceLeftDate = devotee.baceLeftDate;
-		newDevotee.currentAddress = devotee.currentAddress;
-		newDevotee.dob = devotee.dob;
-		newDevotee.email = devotee.email;
-		newDevotee.emergencyNumber = devotee.emergencyNumber;
-		newDevotee.fatherName = devotee.fatherName;
-		newDevotee.mobileNumber = devotee.mobileNumber;
-		newDevotee.permanentAddress = devotee.permanentAddress;
+		for (let column of this.columnsList) {
+			newDevotee[column.id] = devotee[column.id];
+		}
 		return newDevotee;
 	}
 
 	getSelectedColumns(): Array<string> {
 		let selectedColumns: Array<string> = [];
-		if (this.cName) {
-			selectedColumns.push("Name");
+		for (let column of this.columnsList) {
+			if (column.isSelected) {
+				selectedColumns.push(column.name);
+			}
 		}
-		if (this.cbaceJoinDate) {
-			selectedColumns.push("Bace Join Date");
-		}
-		if (this.cbaceLeftDate) {
-			selectedColumns.push("Bace Left Date");
-		}
-		if (this.ccurrentAddress) {
-			selectedColumns.push("Current Address");
-		}
-		if (this.cdob) {
-			selectedColumns.push("Date of Birth");
-		}
-		if (this.cemail) {
-			selectedColumns.push("Email");
-		}
-		if (this.cemergencyNumber) {
-			selectedColumns.push("Emergency Number");
-		}
-		if (this.cfatherName) {
-			selectedColumns.push("Father's Name");
-		}
-		if (this.cmobileNumber) {
-			selectedColumns.push("Mobile Number");
-		}
-		if (this.cpermanentAddress) {
-			selectedColumns.push("Permanent Address");
-		}
-
 		return selectedColumns;
 	}
-
 }
