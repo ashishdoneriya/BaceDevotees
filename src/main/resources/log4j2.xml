@@ -24,10 +24,10 @@
 	
 	<loggers>
 		<logger name="EventLogger" level="info" >
-			<appender-ref ref="rollingFileAppender"/>
+			<appender-ref ref="Console"/>
 		</logger>
 		<root level="error">
-			<appender-ref ref="rollingFileAppender" />
+			<appender-ref ref="Console" />
 		</root>
 	</loggers>
 

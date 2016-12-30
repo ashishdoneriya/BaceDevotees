@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import 'rxjs/add/operator/toPromise';
 
 import { Devotee } from './devotee';
 
@@ -58,6 +59,23 @@ export class ApiService {
 		let options = new RequestOptions({ headers: headers });
 		return this.http.delete('/apis/devotee/' + id, options)
 			.map((res: Response) => res.text);
+	}
+
+	download(searchQuery: string, sortBy: any, order: any, selectedColumns: Array<string>) {
+		let params: URLSearchParams = new URLSearchParams();
+		if (searchQuery) {
+			params.set("searchQuery", searchQuery);
+		}
+		if (sortBy) {
+			params.set('sortBy', sortBy);
+		}
+		if (order) {
+			params.set('order', order);
+		}
+		if (selectedColumns) {
+			params.set("selectedColumns", JSON.stringify(selectedColumns));
+		}
+		return this.http.get('/apis/devotees/download', { search: params });
 	}
 
 	private extractData(res: Response) {

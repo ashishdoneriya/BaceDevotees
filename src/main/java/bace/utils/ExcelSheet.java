@@ -1,5 +1,6 @@
 package bace.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -15,21 +16,21 @@ public class ExcelSheet {
 	public Workbook create(List<Devotee> devotees, List<String> columns) {
 		Workbook workbook = new XSSFWorkbook();
 		Sheet spreadsheet = workbook.createSheet("Devotees");
-		Row row = spreadsheet.createRow(1);
+		Row row = spreadsheet.createRow(0);
 		Cell cell;
-		cell = row.createCell(1);
 		int i = 0;
 		for (String columnName : columns) {
-			cell = row.createCell(++i);
+			cell = row.createCell(i++);
 			cell.setCellValue(columnName);
 		}
 
-		int rowNumber = 2;
+		SimpleDateFormat formatter = new SimpleDateFormat(Constants.EXCEL_DATE_FORMAT);
+		int rowNumber = 1;
 		for (Devotee devotee : devotees) {
 			row = spreadsheet.createRow(rowNumber++);
 			int columnNumber = 0;
 			for (String columnName : columns) {
-				cell = row.createCell(++columnNumber);
+				cell = row.createCell(columnNumber++);
 				switch (columnName) {
 				case "Name":
 					cell.setCellValue(checkNull(devotee.getName()));
@@ -52,32 +53,33 @@ public class ExcelSheet {
 				case "Permanent Address":
 					cell.setCellValue(checkNull(devotee.getPermanentAddress()));
 					break;
-				case "Date of Birth": 
+				case "Date of Birth":
 					if (devotee.getDob() != null) {
-						cell.setCellValue(devotee.getDob());
+						cell.setCellValue(formatter.format(devotee.getDob()));
 					}
 					break;
 				case "Bace Join Date": 
 					if (devotee.getBaceJoinDate() != null) {
-						cell.setCellValue(devotee.getBaceJoinDate());
+						cell.setCellValue(formatter.format(devotee.getBaceJoinDate()));
 					}
 					break;
 				case "Bace Left Date": 
 					if (devotee.getBaceLeftDate() != null) {
-						cell.setCellValue(devotee.getBaceLeftDate());
+						cell.setCellValue(formatter.format(devotee.getBaceLeftDate()));
 					}
 					break;
 				}
-				
 			}
-
+		}
+		for (i = 0; i < columns.size(); i++) {
+			spreadsheet.autoSizeColumn(i);
 		}
 		return workbook;
 	}
 
 	private String checkNull(String object) {
 		if (object == null) {
-			return "";
+			return Constants.EMPTY_STRING;
 		}
 		return object;
 	}

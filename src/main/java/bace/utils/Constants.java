@@ -37,5 +37,11 @@ public interface Constants {
 	String SEARCH_QUERY = "searchQuery";
 	
 	String APIS = "/apis";
+	
+	String DATE_FORMAT = "yyyy-mm-dd";
+	
+	String EXCEL_DATE_FORMAT = "dd MMM yyyy";
+	
+	String EMPTY_STRING = "";
 
 }

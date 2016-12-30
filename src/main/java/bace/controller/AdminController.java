@@ -11,18 +11,23 @@ import static bace.utils.Constants.SAVE;
 import static bace.utils.Constants.SEARCH_QUERY;
 import static bace.utils.Constants.SUCCESS;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +46,7 @@ import com.google.gson.reflect.TypeToken;
 
 import bace.dao.DevoteeDao;
 import bace.pojo.Devotee;
+import bace.utils.ExcelSheet;
 
 @Controller
 @RequestMapping(APIS)
@@ -55,6 +61,8 @@ public class AdminController {
 	private static final String RECORDS = "records";
 
 	private static final Logger LOG = LogManager.getLogger(AdminController.class);
+
+	private static final String DEVOTEES_DOWNLOAD = "/devotees/download";
 
 	@Autowired
 	DevoteeDao devoteeDao;
@@ -94,15 +102,49 @@ public class AdminController {
 		return gson.toJson(result);
 	}
 
-	public void downloadExcel(HttpServletRequest request) {
+	@RequestMapping(value = DEVOTEES_DOWNLOAD, method = RequestMethod.GET)
+	public void downloadExcel(HttpServletRequest request, HttpServletResponse response) {
 		String searchQuery = request.getParameter(SEARCH_QUERY);
 		String sortBy = request.getParameter(SORT_BY);
 		String order = request.getParameter(ORDER2);
-		String sColumnsList = request.getParameter("columns");
-		Type type = new TypeToken<List<String>>(){}.getType();
-		List<String> columns = gson.fromJson(sColumnsList, type);
-		List<Devotee> list = devoteeDao.list(searchQuery, null, null, sortBy, order);
-		
+		String sColumnsList = request.getParameter("selectedColumns");
+		try {
+			List<String> selectedColumns;
+			if (sColumnsList == null || sColumnsList.isEmpty()) {
+				selectedColumns = new ArrayList<String>(10);
+				selectedColumns.add("Name");
+				selectedColumns.add("Mobile Number");
+				selectedColumns.add("Email");
+				selectedColumns.add("Father's Name");
+				selectedColumns.add("Emergency Number");
+				selectedColumns.add("Current Address");
+				selectedColumns.add("Permanent Address");
+				selectedColumns.add("Date of Birth");
+				selectedColumns.add("Bace Join Date");
+				selectedColumns.add("Bace Left Date");
+			} else {
+				Type type = new TypeToken<List<String>>() {
+				}.getType();
+				selectedColumns = gson.fromJson(sColumnsList, type);
+			}
+			List<Devotee> list = devoteeDao.list(searchQuery, null, null, sortBy, order);
+			ExcelSheet sheet = new ExcelSheet();
+			Workbook workbook = sheet.create(list, selectedColumns);
+
+			OutputStream out = response.getOutputStream();
+			response.setHeader("Content-Disposition", "attachment; filename=Devotee.xlsx");
+			response.setContentType("application/xlsx");
+			workbook.write(out);
+			out.flush();
+			out.close();
+		//	return "success";
+		} catch (IOException e) {
+			LOG.error("Error while downloading file", e);
+		//	return e.getMessage();
+		} catch (Exception e) {
+			LOG.error(e);
+		//	return e.getMessage();
+		}
 	}
 
 	@ResponseBody

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Http, Response, URLSearchParams, Headers, RequestOptions, ResponseContentType } from '@angular/http';
 
 import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
@@ -156,6 +157,7 @@ export class AdminComponent implements OnInit {
 			this.toastyService.success(this.toastOptions);
 			this.search();
 		}, error => {
+			this.toastOptions.title = '';
 			this.toastOptions.msg = 'Unable to delete the record.';
 			this.toastyService.error(this.toastOptions);
 		});
@@ -164,6 +166,34 @@ export class AdminComponent implements OnInit {
 	logout() {
 		this.apiService.logout();
 		this.router.navigate(['login']);
+	}
+
+	download() {
+		let selectedColumns: Array<string> = this.getSelectedColumns();
+		if (selectedColumns.length == 0) {
+			this.toastOptions.title = '';
+			this.toastOptions.msg = 'Please select atleast one column.';
+			this.toastyService.info(this.toastOptions);
+			return;
+		}
+		if (this.devoteesList == null || this.devoteesList.length == 0) {
+			this.toastOptions.title = '';
+			this.toastOptions.msg = 'No data to download.';
+			this.toastyService.info(this.toastOptions);
+			return;
+		}
+		this.apiService.download(this.searchQuery, this.sortBy, this.order, selectedColumns)
+			.subscribe(data => window.open(data.url)),//console.log(data),
+			error => {
+				this.toastOptions.title = 'Unable to download';
+				this.toastOptions.msg = error;
+				this.toastyService.error(this.toastOptions);
+			}));
+	}
+	downloadFile(data: Response) {
+		//		var blob = new Blob([data.url], { type: 'text/xlsx' });
+		//	var url = window.URL.createObjectURL(data.url);
+		window.open(data.url);
 	}
 
 	copy(devotee: Devotee): Devotee {
@@ -180,6 +210,42 @@ export class AdminComponent implements OnInit {
 		newDevotee.mobileNumber = devotee.mobileNumber;
 		newDevotee.permanentAddress = devotee.permanentAddress;
 		return newDevotee;
+	}
+
+	getSelectedColumns(): Array<string> {
+		let selectedColumns: Array<string> = [];
+		if (this.cName) {
+			selectedColumns.push("Name");
+		}
+		if (this.cbaceJoinDate) {
+			selectedColumns.push("Bace Join Date");
+		}
+		if (this.cbaceLeftDate) {
+			selectedColumns.push("Bace Left Date");
+		}
+		if (this.ccurrentAddress) {
+			selectedColumns.push("Current Address");
+		}
+		if (this.cdob) {
+			selectedColumns.push("Date of Birth");
+		}
+		if (this.cemail) {
+			selectedColumns.push("Email");
+		}
+		if (this.cemergencyNumber) {
+			selectedColumns.push("Emergency Number");
+		}
+		if (this.cfatherName) {
+			selectedColumns.push("Father's Name");
+		}
+		if (this.cmobileNumber) {
+			selectedColumns.push("Mobile Number");
+		}
+		if (this.cpermanentAddress) {
+			selectedColumns.push("Permanent Address");
+		}
+
+		return selectedColumns;
 	}
 
 }
