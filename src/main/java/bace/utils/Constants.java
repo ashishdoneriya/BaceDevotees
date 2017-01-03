@@ -38,10 +38,22 @@ public interface Constants {
 	
 	String APIS = "/apis";
 	
+	String DEVOTEES_DOWNLOAD = "/devotees/download";
+	
 	String DATE_FORMAT = "yyyy-mm-dd";
 	
 	String EXCEL_DATE_FORMAT = "dd MMM yyyy";
 	
 	String EMPTY_STRING = "";
+	
+	String TOTAL_RESULTS = "totalResults";
+
+	String ORDER2 = "order";
+
+	String SORT_BY = "sortBy";
+
+	String RECORDS = "records";
+	
+	String SELECTED_COLUMNS = "selectedColumns";
 
 }

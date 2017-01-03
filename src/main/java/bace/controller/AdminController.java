@@ -1,15 +1,6 @@
 package bace.controller;
 
-import static bace.utils.Constants.APIS;
-import static bace.utils.Constants.DEVOTEES;
-import static bace.utils.Constants.DEVOTEE_ID;
-import static bace.utils.Constants.FAILED;
-import static bace.utils.Constants.ID2;
-import static bace.utils.Constants.MAXIMUM_RESULTS;
-import static bace.utils.Constants.PAGE_NUMBER;
-import static bace.utils.Constants.SAVE;
-import static bace.utils.Constants.SEARCH_QUERY;
-import static bace.utils.Constants.SUCCESS;
+import static bace.utils.Constants.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -52,17 +43,8 @@ import bace.utils.ExcelSheet;
 @RequestMapping(APIS)
 public class AdminController {
 
-	private static final String TOTAL_RESULTS = "totalResults";
-
-	private static final String ORDER2 = "order";
-
-	private static final String SORT_BY = "sortBy";
-
-	private static final String RECORDS = "records";
-
-	private static final Logger LOG = LogManager.getLogger(AdminController.class);
-
-	private static final String DEVOTEES_DOWNLOAD = "/devotees/download";
+	private static final Logger LOG = 
+			LogManager.getLogger(AdminController.class);
 
 	@Autowired
 	DevoteeDao devoteeDao;
@@ -72,7 +54,7 @@ public class AdminController {
 	static {
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+			DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
 			@Override
 			public Date deserialize(JsonElement json, Type type, JsonDeserializationContext context)
@@ -84,7 +66,7 @@ public class AdminController {
 				}
 			}
 		});
-		gson = gsonBuilder.setDateFormat("yyyy-mm-dd").create();
+		gson = gsonBuilder.setDateFormat(DATE_FORMAT).create();
 	}
 
 	@ResponseBody
@@ -107,7 +89,7 @@ public class AdminController {
 		String searchQuery = request.getParameter(SEARCH_QUERY);
 		String sortBy = request.getParameter(SORT_BY);
 		String order = request.getParameter(ORDER2);
-		String sColumnsList = request.getParameter("selectedColumns");
+		String sColumnsList = request.getParameter(SELECTED_COLUMNS);
 		try {
 			List<String> selectedColumns;
 			if (sColumnsList == null || sColumnsList.isEmpty()) {
@@ -137,13 +119,13 @@ public class AdminController {
 			workbook.write(out);
 			out.flush();
 			out.close();
-		//	return "success";
+			// return "success";
 		} catch (IOException e) {
 			LOG.error("Error while downloading file", e);
-		//	return e.getMessage();
+			// return e.getMessage();
 		} catch (Exception e) {
 			LOG.error(e);
-		//	return e.getMessage();
+			// return e.getMessage();
 		}
 	}
 

@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -18,10 +20,16 @@ public class ExcelSheet {
 		Sheet spreadsheet = workbook.createSheet("Devotees");
 		Row row = spreadsheet.createRow(0);
 		Cell cell;
+		Font font = workbook.createFont();
+		font.setBold(true);
+		font.setFontHeight( (short) 12 );
+		CellStyle style = workbook.createCellStyle();
+		style.setFont(font);
 		int i = 0;
 		for (String columnName : columns) {
 			cell = row.createCell(i++);
 			cell.setCellValue(columnName);
+			cell.setCellStyle(style);
 		}
 
 		SimpleDateFormat formatter = new SimpleDateFormat(Constants.EXCEL_DATE_FORMAT);
