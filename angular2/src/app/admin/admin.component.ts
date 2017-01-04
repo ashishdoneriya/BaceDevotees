@@ -21,9 +21,11 @@ import {
 	ModalDismissReasons
 } from '@ng-bootstrap/ng-bootstrap';
 
+import { ApiService } from '../api.service';
 import { Devotee } from '../devotee';
 import { FormComponent } from './form/form.component';
-import { ApiService } from '../api.service';
+import { UploadFormComponent } from './upload-form/upload-form.component';
+
 
 export class Column {
 	name: string;
@@ -45,6 +47,7 @@ export class AdminComponent implements OnInit {
 	maximumResults: number = 10;
 	sortBy: string = 'name';
 	order: string = 'ascending';
+
 
 	cSerialNumber: boolean = true;
 	cActions: boolean = true;
@@ -102,6 +105,7 @@ export class AdminComponent implements OnInit {
 	];
 
 	toastOptions: ToastOptions;
+	uploadModal: NgbModal;
 
 	private searchTermStream = new Subject<string>();
 
@@ -249,6 +253,21 @@ export class AdminComponent implements OnInit {
 				this.toastOptions.msg = error;
 				this.toastyService.error(this.toastOptions);
 			});
+	}
+
+	upload() {
+		let modelOption: NgbModalOptions = { backdrop: false, keyboard: true };
+		let modalRef: NgbModalRef = this.modalService.open(UploadFormComponent);
+		modalRef.result.then(result => {
+			if (result == 'success') {
+				this.toastOptions.msg = 'Records have been added successfully';
+				this.toastyService.success(this.toastOptions);
+			} else {
+				this.toastOptions.title = 'Error while adding Records';
+				this.toastOptions.msg = result;
+				this.toastyService.error(this.toastOptions);
+			}
+		});
 	}
 
 	copy(devotee: Devotee): Devotee {

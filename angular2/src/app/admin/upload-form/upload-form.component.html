@@ -1,0 +1,24 @@
+<div class="modal-header">
+	<button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss()">
+		<span aria-hidden="true">&times;</span>
+	</button>
+	<h4 class="modal-title">Upload Excel Sheet</h4>
+</div>
+<div class="modal-body">
+
+	<form #form [hidden]="showProgress" class="form-horizontal" id="dude">
+		<fieldset>
+			<div class="form-group row">
+				<div class="col-md-7" style="margin:0 auto;text-align:center">
+					<input name="file" type="file" class="form-control input-md" required="">
+				</div>
+			</div>
+		</fieldset>
+	</form>
+	<p [hidden]="showProgress"><b>NOTE : </b>First row (line) must contain column names. Valid column names are <i>Name</i>, <i>Mobile Number</i>, <i>Email</i>, <i>Date of Birth</i>, <i>Father's Name</i>, <i>Emergency Number</i>, <i>Bace Join Date</i>, <i>Bace Left Date</i> and <i>Current Address</i>.</p>
+	<ngb-progressbar [hidden]="!showProgress" type="success" [value]="progress" [max]="100"></ngb-progressbar>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-success" (click)="upload()">Upload</button>
+	<button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
+</div>

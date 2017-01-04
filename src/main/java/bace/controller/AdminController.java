@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -42,6 +45,8 @@ import bace.utils.ExcelSheet;
 @Controller
 @RequestMapping(APIS)
 public class AdminController {
+
+	private static final String UPLOAD = "/upload";
 
 	private static final Logger LOG = 
 			LogManager.getLogger(AdminController.class);
@@ -120,11 +125,9 @@ public class AdminController {
 			out.flush();
 			out.close();
 			// return "success";
-		} catch (IOException e) {
-			LOG.error("Error while downloading file", e);
-			// return e.getMessage();
 		} catch (Exception e) {
-			LOG.error(e);
+			LOG.error("Error while downloading file", e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			// return e.getMessage();
 		}
 	}
@@ -137,26 +140,44 @@ public class AdminController {
 
 	@ResponseBody
 	@RequestMapping(value = SAVE, method = RequestMethod.POST)
-	public String saveOrUpdate(@RequestBody String json) {
+	public String saveOrUpdate(@RequestBody String json, HttpServletResponse response) {
 		try {
 			devoteeDao.save(gson.fromJson(json, Devotee.class));
 			return SUCCESS;
 		} catch (Exception e) {
 			LOG.error("Unable to save record, json = " + json, e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return FAILED;
 		}
 	}
 
 	@ResponseBody
 	@RequestMapping(value = DEVOTEE_ID, method = RequestMethod.DELETE)
-	public String delete(@PathVariable(ID2) int id) {
+	public String delete(@PathVariable(ID2) int id, HttpServletResponse response) {
 		try {
 			devoteeDao.delete(id);
 			return SUCCESS;
 		} catch (Exception e) {
 			LOG.error("Unable to delete record, id = " + id, e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return FAILED;
 		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = UPLOAD, method = RequestMethod.POST)
+	public String upload(MultipartHttpServletRequest request, HttpServletResponse response) {
+		
+		try {
+			MultipartFile file = request.getFile("file");
+			Workbook workbook = new XSSFWorkbook(file.getInputStream());
+			LOG.info("success");
+		} catch (Exception e) {
+			LOG.error("Error while uploading file", e);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return FAILED;
+		}
+		return null;
 	}
 
 }

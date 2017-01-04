@@ -1,7 +1,7 @@
 <nav class="navbar navbar-full navbar-fixed-top navbar-dark bg-inverse">
 	<h1 class="navbar-brand" style="font-weight:bold">Devotees Management</h1>
 	<div class="nav navbar-nav float-xs-right">
-		<a class="nav-item nav-link" (click)="openUploadModal()"><i class="fa fa-upload" aria-hidden="true"></i>Upload</a>
+		<a class="nav-item nav-link" (click)="upload()"><i class="fa fa-upload" aria-hidden="true"></i>Upload</a>
 		<a class="nav-item nav-link" (click)="add()">Add Devotee</a>
 		<a class="nav-item nav-link" (click)="logout()">Logout</a>
 	</div>
@@ -12,7 +12,7 @@
 			<div class="input-group">
 				<input [(ngModel)]="searchQuery" #query (keyup)="update(query.value)" type="text" class="form-control" placeholder="Search Devotee">
 				<span class="input-group-btn">
-					<button class="btn <btn-sec></btn-sec>ondary" type="button" (click)="search()">Search</button>
+					<button class="btn" type="button" (click)="search()">Search</button>
 				</span>
 			</div>
 		</div>
@@ -59,48 +59,29 @@
 	</div>
 	<div class="row" style="margin-top:25px;">
 		<div class="col-lg-12">
-			<div style="text-align:center;font-weight:bold;color:#ff5722;margin-top:25px;" [hidden]="devoteesList != undefined && devoteesList.length != 0">No Data Available</div>
+			<div style="text-align:center;font-weight:bold;color:#ff5722;margin-top:50px;" [hidden]="devoteesList != undefined && devoteesList.length != 0">No Data Available</div>
 			<table class="table table-hover table-sm" [hidden]="devoteesList == undefined || devoteesList.length == 0">
 				<thead class="thead-inverse">
 					<tr>
 						<th [hidden]="!cSerialNumber">#</th>
-						<th *ngFor="let column of columnsList"
-							[hidden]="!column.isSelected"
-							(click)="updateSortOrder(column.id)"
-							style="cursor:pointer">{{column.name}}</th>
+						<th *ngFor="let column of columnsList" [hidden]="!column.isSelected" (click)="updateSortOrder(column.id)" style="cursor:pointer">{{column.name}}</th>
 						<th [hidden]="!cActions"></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr *ngFor="let devotee of devoteesList; let i = index">
 						<td [hidden]="!cSerialNumber" scope="row">{{(currentPageNo - 1) * maximumResults + i + 1}}.</td>
-						<td *ngFor="let column of columnsList"
-							[hidden]="!column.isSelected">{{devotee[column.id]}}</td>
+						<td *ngFor="let column of columnsList" [hidden]="!column.isSelected">{{devotee[column.id]}}</td>
 						<td [hidden]="!cActions" style="text-align:right;">
-							<button (click)="edit(devotee)"
-								type="button"
-								style="padding: 4px 8px;width:65px;"
-								class="btn btn-info">Edit</button>
-							<button (click)="delete(devotee.id)"
-								type="button"
-								style="margin-left:10px;padding: 4px 8px;width:65px;"
-								class="btn btn-danger">Delete</button>
+							<button (click)="edit(devotee)" type="button" style="padding: 4px 8px;width:65px;" class="btn btn-info">Edit</button>
+							<button (click)="delete(devotee.id)" type="button" style="margin-left:10px;padding: 4px 8px;width:65px;" class="btn btn-danger">Delete</button>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		<div class="col-lg-12"
-			style="text-align:center"
-			[hidden]="devoteesList == undefined || devoteesList.length == 0">
-			<ngb-pagination
-				[collectionSize]="totalResults"
-				[boundaryLinks]="true"
-				[directionLinks]="true"
-				[maxSize]="10"
-				[page]="currentPageNo"
-				[pageSize]="maximumResults"
-				(pageChange)="search($event)"></ngb-pagination>
+		<div class="col-lg-12" style="text-align:center" [hidden]="devoteesList == undefined || devoteesList.length == 0">
+			<ngb-pagination [collectionSize]="totalResults" [boundaryLinks]="true" [directionLinks]="true" [maxSize]="10" [page]="currentPageNo" [pageSize]="maximumResults" (pageChange)="search($event)"></ngb-pagination>
 		</div>
 	</div>
 </div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, URLSearchParams, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-
+import { Observer } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
@@ -75,6 +75,29 @@ export class ApiService {
 			params.set("selectedColumns", JSON.stringify(selectedColumns));
 		}
 		return this.http.get('/apis/devotees/download', { search: params });
+	}
+
+	upload(form: HTMLFormElement) {
+		return Observable.create((observer:Observer<any>) => {
+			let formData: FormData = new FormData(form);
+			let thisComponent = this;
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '/apis/upload');
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						observer.next(xhr.response);
+						observer.complete();
+					} else {
+						observer.error(xhr.response);
+					}
+				}
+			}
+			xhr.upload.onprogress = (event:ProgressEvent) => {
+				observer.next(Math.round(event.loaded / event.total * 100))
+			};
+			xhr.send(formData);
+		});
 	}
 
 	private extractData(res: Response) {

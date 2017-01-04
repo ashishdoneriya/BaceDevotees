@@ -10,8 +10,7 @@ import { AdminComponent } from './admin/admin.component';
 import { ApiService } from './api.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormComponent } from './admin/form/form.component';
-import { DownloadComponent } from './admin/download/download.component';
-import { DownloadFormComponent } from './admin/download-form/download-form.component';
+import { UploadFormComponent } from './admin/upload-form/upload-form.component';
 
 const appRoutes: Routes = [
 	{ path: '', component: LoginComponent },
@@ -25,8 +24,7 @@ const appRoutes: Routes = [
 		LoginComponent,
 		AdminComponent,
 		FormComponent,
-		DownloadComponent,
-		DownloadFormComponent
+		UploadFormComponent
 	],
 	imports: [
 		BrowserModule,
@@ -39,6 +37,6 @@ const appRoutes: Routes = [
 	],
 	providers: [ApiService],
 	bootstrap: [AppComponent],
-	entryComponents: [FormComponent]
+	entryComponents: [FormComponent, UploadFormComponent]
 })
 export class AppModule { }
