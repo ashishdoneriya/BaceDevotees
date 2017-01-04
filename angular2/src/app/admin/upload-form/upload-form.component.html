@@ -6,17 +6,17 @@
 </div>
 <div class="modal-body">
 
-	<form #form [hidden]="showProgress" class="form-horizontal" id="dude">
+	<form [hidden]="showProgress" class="form-horizontal">
 		<fieldset>
 			<div class="form-group row">
 				<div class="col-md-7" style="margin:0 auto;text-align:center">
-					<input name="file" type="file" class="form-control input-md" required="">
+					<input name="file" (change)="onChange($event)" type="file" class="form-control input-md" required="">
 				</div>
 			</div>
 		</fieldset>
 	</form>
 	<p [hidden]="showProgress"><b>NOTE : </b>First row (line) must contain column names. Valid column names are <i>Name</i>, <i>Mobile Number</i>, <i>Email</i>, <i>Date of Birth</i>, <i>Father's Name</i>, <i>Emergency Number</i>, <i>Bace Join Date</i>, <i>Bace Left Date</i> and <i>Current Address</i>.</p>
-	<ngb-progressbar [hidden]="!showProgress" type="success" [value]="progress" [max]="100"></ngb-progressbar>
+	<progress class="progress progress-success" value="{{progress}}" max="100"></progress>
 </div>
 <div class="modal-footer">
 	<button type="button" class="btn btn-success" (click)="upload()">Upload</button>

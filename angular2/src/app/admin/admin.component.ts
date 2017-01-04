@@ -267,6 +267,10 @@ export class AdminComponent implements OnInit {
 				this.toastOptions.msg = result;
 				this.toastyService.error(this.toastOptions);
 			}
+		}, error => {
+			this.toastOptions.title = 'Error while adding Records';
+			this.toastOptions.msg = error;
+			this.toastyService.error(this.toastOptions);
 		});
 	}
 

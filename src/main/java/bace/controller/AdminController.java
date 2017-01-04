@@ -172,12 +172,12 @@ public class AdminController {
 			MultipartFile file = request.getFile("file");
 			Workbook workbook = new XSSFWorkbook(file.getInputStream());
 			LOG.info("success");
+			return "success";
 		} catch (Exception e) {
 			LOG.error("Error while uploading file", e);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			return FAILED;
+			return e.getLocalizedMessage();
 		}
-		return null;
 	}
 
 }

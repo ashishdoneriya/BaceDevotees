@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, ViewChild } from '@angular/core';
+import { Component, EventEmitter, ViewChild } from '@angular/core';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from '../../api.service';
 
@@ -7,23 +7,28 @@ import { ApiService } from '../../api.service';
 	templateUrl: './upload-form.component.html',
 	styleUrls: ['./upload-form.component.css']
 })
-export class UploadFormComponent implements OnInit {
+export class UploadFormComponent {
 
-	@ViewChild('form') form: HTMLFormElement;
+	file: File;
 
 	progress: number = 0;
 
 	showProgress: boolean = false;
 
-	constructor(private apiService: ApiService,
-		public activeModal: NgbActiveModal) { }
+	constructor(public apiService: ApiService,
+		public activeModal: NgbActiveModal) {
+	}
 
-	ngOnInit() {
+	onChange(event: EventTarget) {
+		let eventObj: MSInputMethodContext = <MSInputMethodContext>event;
+		let target: HTMLInputElement = <HTMLInputElement>eventObj.target;
+		let files: FileList = target.files;
+		this.file = files[0];
 	}
 
 	upload() {
 		this.showProgress = true;
-		this.apiService.upload(this.form).subscribe(
+		this.apiService.upload(this.file).subscribe(
 			next => {
 				if (typeof next == 'number') {
 					this.progress = next;

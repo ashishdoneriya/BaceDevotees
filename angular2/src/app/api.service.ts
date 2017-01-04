@@ -77,12 +77,11 @@ export class ApiService {
 		return this.http.get('/apis/devotees/download', { search: params });
 	}
 
-	upload(form: HTMLFormElement) {
+	upload(file: File) {
 		return Observable.create((observer:Observer<any>) => {
-			let formData: FormData = new FormData(form);
-			let thisComponent = this;
-			var xhr = new XMLHttpRequest();
-			xhr.open('POST', '/apis/upload');
+			let formData: FormData = new FormData();
+			formData.append('file', file);
+			let xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function () {
 				if (xhr.readyState === 4) {
 					if (xhr.status === 200) {
@@ -93,15 +92,15 @@ export class ApiService {
 					}
 				}
 			}
-			xhr.upload.onprogress = (event:ProgressEvent) => {
+			xhr.upload.onprogress = (event: ProgressEvent) => {
 				observer.next(Math.round(event.loaded / event.total * 100))
 			};
+			xhr.open('POST', '/apis/upload', true);
 			xhr.send(formData);
 		});
 	}
 
 	private extractData(res: Response) {
-		console.log(res);
 		let body = res.json();
 		return body.data || null;
 	}
