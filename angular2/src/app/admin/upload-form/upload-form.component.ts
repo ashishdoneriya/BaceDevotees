@@ -33,14 +33,16 @@ export class UploadFormComponent {
 				if (typeof next == 'number') {
 					this.progress = next;
 				} else {
-					this.activeModal.close(next);
+					console.log('complete');
+				//	this.activeModal.close(next);
 				}
 			},
 			error => {
-				this.activeModal.close(error);
+			//	this.activeModal.close(error);
 			},
 			() => {
-				this.activeModal.close();
+				console.log('complete');
+			//	this.activeModal.close('success');
 			}
 		);
 	}

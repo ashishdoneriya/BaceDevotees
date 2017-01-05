@@ -14,10 +14,14 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.joestelmach.natty.Parser;
 
 import bace.dao.DevoteeDao;
 import bace.pojo.Devotee;
 
+@Component
 public class ExcelSheet {
 
 	@Autowired
@@ -103,6 +107,7 @@ public class ExcelSheet {
 		String columnName;
 		Devotee devotee;
 		boolean toUpdate;
+		Parser parser = new Parser();
 		while (sheetIterator.hasNext()) {
 			map = new HashMap<>();
 			Sheet sheet = sheetIterator.next();
@@ -124,9 +129,9 @@ public class ExcelSheet {
 			while (rowIterator.hasNext()) {
 				row = rowIterator.next();
 				if (toUpdate) {
-					devotee = new Devotee();
-				} else {
 					devotee = devoteeDao.get((int) row.getCell(0).getNumericCellValue());
+				} else {
+					devotee = new Devotee();
 				}
 
 				for (int i = 0; i < totalColumns; i++) {
@@ -174,7 +179,7 @@ public class ExcelSheet {
 					case "dateofbirth":
 					case "dob":
 					case "birthdate":
-						devotee.setDob(cell.getDateCellValue());
+						devotee.setDob(parser.parse(cell.getStringCellValue()).get(0).getDates().get(0));
 						break;
 					case "bacejoindate":
 					case "bacejoiningdate":
@@ -183,13 +188,13 @@ public class ExcelSheet {
 					case "join":
 					case "bacejoin":
 					case "bacejoining":
-						devotee.setBaceJoinDate(cell.getDateCellValue());
+						devotee.setBaceJoinDate(parser.parse(cell.getStringCellValue()).get(0).getDates().get(0));
 						break;
 					case "baceleftdate":
 					case "leftdate":
 					case "left":
 					case "baceleft":
-						devotee.setBaceLeftDate(cell.getDateCellValue());
+						devotee.setBaceLeftDate(parser.parse(cell.getStringCellValue()).get(0).getDates().get(0));
 						break;
 					}
 				}

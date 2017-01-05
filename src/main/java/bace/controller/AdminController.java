@@ -53,6 +53,9 @@ public class AdminController {
 
 	@Autowired
 	DevoteeDao devoteeDao;
+	
+	@Autowired
+	ExcelSheet excelSheet;
 
 	private static Gson gson;
 
@@ -115,8 +118,7 @@ public class AdminController {
 				selectedColumns = gson.fromJson(sColumnsList, type);
 			}
 			List<Devotee> list = devoteeDao.list(searchQuery, null, null, sortBy, order);
-			ExcelSheet sheet = new ExcelSheet();
-			Workbook workbook = sheet.create(list, selectedColumns);
+			Workbook workbook = excelSheet.create(list, selectedColumns);
 
 			OutputStream out = response.getOutputStream();
 			response.setHeader("Content-Disposition", "attachment; filename=Devotee.xlsx");
@@ -171,7 +173,7 @@ public class AdminController {
 		try {
 			MultipartFile file = request.getFile("file");
 			Workbook workbook = new XSSFWorkbook(file.getInputStream());
-			new ExcelSheet().extractData(workbook);
+			excelSheet.extractData(workbook);
 			return "success";
 		} catch (Exception e) {
 			LOG.error("Error while uploading file", e);

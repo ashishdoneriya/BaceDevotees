@@ -21,7 +21,7 @@
 		<form role="form" class="form-inline">
 			<div class="form-group" style="margin-right:20px">
 				<label for="maximumResults" style="font-weight:bold">Maximum Results</label>
-				<select [(ngModel)]="maximumResults" (change)="search()" class="form-control" id="maximumResults" name="maximumResults">
+				<select [(ngModel)]="maximumResults" (change)="currentPageNo=1;search()" class="form-control" id="maximumResults" name="maximumResults">
 					<option selected>10</option>
 					<option>20</option>
 					<option>50</option>
