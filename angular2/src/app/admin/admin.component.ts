@@ -260,6 +260,7 @@ export class AdminComponent implements OnInit {
 		let modalRef: NgbModalRef = this.modalService.open(UploadFormComponent);
 		modalRef.result.then(result => {
 			if (result == 'success') {
+				this.toastOptions.title = '';
 				this.toastOptions.msg = 'Records have been added successfully';
 				this.toastyService.success(this.toastOptions);
 			} else {

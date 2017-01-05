@@ -1,7 +1,10 @@
 package bace.utils;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -10,10 +13,15 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import bace.dao.DevoteeDao;
 import bace.pojo.Devotee;
 
 public class ExcelSheet {
+
+	@Autowired
+	DevoteeDao devoteeDao;
 
 	public Workbook create(List<Devotee> devotees, List<String> columns) {
 		Workbook workbook = new XSSFWorkbook();
@@ -22,7 +30,7 @@ public class ExcelSheet {
 		Cell cell;
 		Font font = workbook.createFont();
 		font.setBold(true);
-		font.setFontHeight( (short) 12 );
+		font.setFontHeight((short) 12);
 		CellStyle style = workbook.createCellStyle();
 		style.setFont(font);
 		int i = 0;
@@ -66,12 +74,12 @@ public class ExcelSheet {
 						cell.setCellValue(formatter.format(devotee.getDob()));
 					}
 					break;
-				case "Bace Join Date": 
+				case "Bace Join Date":
 					if (devotee.getBaceJoinDate() != null) {
 						cell.setCellValue(formatter.format(devotee.getBaceJoinDate()));
 					}
 					break;
-				case "Bace Left Date": 
+				case "Bace Left Date":
 					if (devotee.getBaceLeftDate() != null) {
 						cell.setCellValue(formatter.format(devotee.getBaceLeftDate()));
 					}
@@ -83,6 +91,111 @@ public class ExcelSheet {
 			spreadsheet.autoSizeColumn(i);
 		}
 		return workbook;
+	}
+
+	public void extractData(Workbook workbook) {
+		Map<Integer, String> map;
+		Iterator<Sheet> sheetIterator = workbook.iterator();
+		Iterator<Row> rowIterator;
+		Iterator<Cell> cellIterator;
+		Row row;
+		Cell cell;
+		String columnName;
+		Devotee devotee;
+		boolean toUpdate;
+		while (sheetIterator.hasNext()) {
+			map = new HashMap<>();
+			Sheet sheet = sheetIterator.next();
+			rowIterator = sheet.iterator();
+			if (!rowIterator.hasNext()) {
+				continue;
+			}
+			row = rowIterator.next();
+			cellIterator = row.iterator();
+			int totalColumns = 0;
+			while (cellIterator.hasNext()) {
+				cell = cellIterator.next();
+				map.put(totalColumns++, cell.getStringCellValue());
+			}
+			toUpdate = false;
+			if (row.getCell(0).getStringCellValue().replaceAll("\\s+", "").equalsIgnoreCase("id")) {
+				toUpdate = true;
+			}
+			while (rowIterator.hasNext()) {
+				row = rowIterator.next();
+				if (toUpdate) {
+					devotee = new Devotee();
+				} else {
+					devotee = devoteeDao.get((int) row.getCell(0).getNumericCellValue());
+				}
+
+				for (int i = 0; i < totalColumns; i++) {
+					columnName = map.get(i);
+					cell = row.getCell(i);
+					switch (columnName.toLowerCase().replaceAll("\\s+", "")) {
+					case "name":
+					case "fullname":
+					case "devoteename":
+					case "devotee'sname":
+					case "completename":
+						devotee.setName(cell.getStringCellValue());
+						break;
+					case "mobilenumber":
+					case "mobile":
+					case "phonenumber":
+					case "phone":
+					case "contactnumber":
+					case "contact":
+						devotee.setMobileNumber(cell.getStringCellValue());
+						break;
+					case "email":
+					case "emailaddress":
+					case "emailid":
+						devotee.setEmail(cell.getStringCellValue());
+						break;
+					case "father'sname":
+					case "fathername":
+						devotee.setFatherName(cell.getStringCellValue());
+						break;
+					case "emergencynumber":
+					case "emergencycontact":
+					case "emergencycontactnumber":
+						devotee.setEmergencyNumber(cell.getStringCellValue());
+						break;
+					case "currentaddress":
+						devotee.setCurrentAddress(cell.getStringCellValue());
+						break;
+					case "permanentaddress":
+					case "address":
+					case "homeaddress":
+					case "hometown":
+						devotee.setPermanentAddress(cell.getStringCellValue());
+						break;
+					case "dateofbirth":
+					case "dob":
+					case "birthdate":
+						devotee.setDob(cell.getDateCellValue());
+						break;
+					case "bacejoindate":
+					case "bacejoiningdate":
+					case "joiningdate":
+					case "joindate":
+					case "join":
+					case "bacejoin":
+					case "bacejoining":
+						devotee.setBaceJoinDate(cell.getDateCellValue());
+						break;
+					case "baceleftdate":
+					case "leftdate":
+					case "left":
+					case "baceleft":
+						devotee.setBaceLeftDate(cell.getDateCellValue());
+						break;
+					}
+				}
+				devoteeDao.save(devotee);
+			}
+		}
 	}
 
 	private String checkNull(String object) {

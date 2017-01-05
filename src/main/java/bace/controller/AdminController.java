@@ -147,7 +147,7 @@ public class AdminController {
 		} catch (Exception e) {
 			LOG.error("Unable to save record, json = " + json, e);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			return FAILED;
+			return e.getMessage();
 		}
 	}
 
@@ -160,7 +160,7 @@ public class AdminController {
 		} catch (Exception e) {
 			LOG.error("Unable to delete record, id = " + id, e);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			return FAILED;
+			return e.getMessage();
 		}
 	}
 	
@@ -171,12 +171,12 @@ public class AdminController {
 		try {
 			MultipartFile file = request.getFile("file");
 			Workbook workbook = new XSSFWorkbook(file.getInputStream());
-			LOG.info("success");
+			new ExcelSheet().extractData(workbook);
 			return "success";
 		} catch (Exception e) {
 			LOG.error("Error while uploading file", e);
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			return e.getLocalizedMessage();
+			return e.getMessage();
 		}
 	}
 
