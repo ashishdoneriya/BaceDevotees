@@ -8,6 +8,12 @@
 	<form class="form-horizontal">
 		<fieldset>
 
+			<div [hidden]="type == 'Add'" class="form-group row">
+				<label class="col-md-4 control-label" for="name">Id</label>
+				<div class="col-md-7">{{devotee.id}}
+				</div>
+			</div>
+
 			<div class="form-group row">
 				<label class="col-md-4 control-label" for="name">Name</label>
 				<div class="col-md-7">

@@ -40,7 +40,7 @@ public interface Constants {
 	
 	String DEVOTEES_DOWNLOAD = "/devotees/download";
 	
-	String DATE_FORMAT = "yyyy-mm-dd";
+	String DATE_FORMAT = "d MMMMM yyyy";
 	
 	String EXCEL_DATE_FORMAT = "dd MMM yyyy";
 	

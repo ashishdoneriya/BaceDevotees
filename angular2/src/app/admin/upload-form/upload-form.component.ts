@@ -11,8 +11,6 @@ export class UploadFormComponent {
 
 	file: File;
 
-	progress: number = 0;
-
 	showProgress: boolean = false;
 
 	constructor(public apiService: ApiService,
@@ -29,20 +27,13 @@ export class UploadFormComponent {
 	upload() {
 		this.showProgress = true;
 		this.apiService.upload(this.file).subscribe(
-			next => {
-				if (typeof next == 'number') {
-					this.progress = next;
-				} else {
-					console.log('complete');
-				//	this.activeModal.close(next);
-				}
-			},
+			next => {},
 			error => {
-			//	this.activeModal.close(error);
+				this.activeModal.close(error);
 			},
 			() => {
 				console.log('complete');
-			//	this.activeModal.close('success');
+				this.activeModal.close('success');
 			}
 		);
 	}

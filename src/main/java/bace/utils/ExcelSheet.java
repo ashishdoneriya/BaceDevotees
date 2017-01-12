@@ -24,6 +24,57 @@ import bace.pojo.Devotee;
 @Component
 public class ExcelSheet {
 
+	private static final String BACELEFT = "baceleft";
+	private static final String LEFT = "left";
+	private static final String LEFTDATE = "leftdate";
+	private static final String BACELEFTDATE = "baceleftdate";
+	private static final String BACEJOINING = "bacejoining";
+	private static final String BACEJOIN = "bacejoin";
+	private static final String JOIN = "join";
+	private static final String JOINDATE = "joindate";
+	private static final String JOININGDATE = "joiningdate";
+	private static final String BACEJOININGDATE = "bacejoiningdate";
+	private static final String BACEJOINDATE = "bacejoindate";
+	private static final String BIRTHDATE = "birthdate";
+	private static final String DOB = "dob";
+	private static final String DATEOFBIRTH = "dateofbirth";
+	private static final String HOMETOWN = "hometown";
+	private static final String HOMEADDRESS = "homeaddress";
+	private static final String ADDRESS = "address";
+	private static final String PERMANENTADDRESS = "permanentaddress";
+	private static final String CURRENTADDRESS = "currentaddress";
+	private static final String EMERGENCYCONTACTNUMBER = "emergencycontactnumber";
+	private static final String EMERGENCYCONTACT = "emergencycontact";
+	private static final String EMERGENCYNUMBER = "emergencynumber";
+	private static final String FATHERNAME = "fathername";
+	private static final String FATHER_SNAME = "father'sname";
+	private static final String EMAILID = "emailid";
+	private static final String EMAILADDRESS = "emailaddress";
+	private static final String EMAIL2 = "email";
+	private static final String CONTACT = "contact";
+	private static final String CONTACTNUMBER = "contactnumber";
+	private static final String PHONE = "phone";
+	private static final String PHONENUMBER = "phonenumber";
+	private static final String MOBILE = "mobile";
+	private static final String MOBILENUMBER = "mobilenumber";
+	private static final String COMPLETENAME = "completename";
+	private static final String DEVOTEE_SNAME = "devotee'sname";
+	private static final String DEVOTEENAME = "devoteename";
+	private static final String FULLNAME = "fullname";
+	private static final String REPLACEMENT = "";
+	private static final String ID = "id";
+	private static final String S = "\\s+";
+	private static final String NAME2 = "name";
+	private static final String BACE_LEFT_DATE = "Bace Left Date";
+	private static final String BACE_JOIN_DATE = "Bace Join Date";
+	private static final String DATE_OF_BIRTH = "Date of Birth";
+	private static final String PERMANENT_ADDRESS = "Permanent Address";
+	private static final String CURRENT_ADDRESS = "Current Address";
+	private static final String EMERGENCY_NUMBER = "Emergency Number";
+	private static final String FATHER_S_NAME = "Father's Name";
+	private static final String EMAIL = "Email";
+	private static final String MOBILE_NUMBER = "Mobile Number";
+	private static final String NAME = "Name";
 	@Autowired
 	DevoteeDao devoteeDao;
 
@@ -52,38 +103,38 @@ public class ExcelSheet {
 			for (String columnName : columns) {
 				cell = row.createCell(columnNumber++);
 				switch (columnName) {
-				case "Name":
+				case NAME:
 					cell.setCellValue(checkNull(devotee.getName()));
 					break;
-				case "Mobile Number":
+				case MOBILE_NUMBER:
 					cell.setCellValue(checkNull(devotee.getMobileNumber()));
 					break;
-				case "Email":
+				case EMAIL:
 					cell.setCellValue(checkNull(devotee.getEmail()));
 					break;
-				case "Father's Name":
+				case FATHER_S_NAME:
 					cell.setCellValue(checkNull(devotee.getFatherName()));
 					break;
-				case "Emergency Number":
+				case EMERGENCY_NUMBER:
 					cell.setCellValue(checkNull(devotee.getEmergencyNumber()));
 					break;
-				case "Current Address":
+				case CURRENT_ADDRESS:
 					cell.setCellValue(checkNull(devotee.getCurrentAddress()));
 					break;
-				case "Permanent Address":
+				case PERMANENT_ADDRESS:
 					cell.setCellValue(checkNull(devotee.getPermanentAddress()));
 					break;
-				case "Date of Birth":
+				case DATE_OF_BIRTH:
 					if (devotee.getDob() != null) {
 						cell.setCellValue(formatter.format(devotee.getDob()));
 					}
 					break;
-				case "Bace Join Date":
+				case BACE_JOIN_DATE:
 					if (devotee.getBaceJoinDate() != null) {
 						cell.setCellValue(formatter.format(devotee.getBaceJoinDate()));
 					}
 					break;
-				case "Bace Left Date":
+				case BACE_LEFT_DATE:
 					if (devotee.getBaceLeftDate() != null) {
 						cell.setCellValue(formatter.format(devotee.getBaceLeftDate()));
 					}
@@ -123,7 +174,7 @@ public class ExcelSheet {
 				map.put(totalColumns++, cell.getStringCellValue());
 			}
 			toUpdate = false;
-			if (row.getCell(0).getStringCellValue().replaceAll("\\s+", "").equalsIgnoreCase("id")) {
+			if (row.getCell(0).getStringCellValue().replaceAll(S, REPLACEMENT).equalsIgnoreCase(ID)) {
 				toUpdate = true;
 			}
 			while (rowIterator.hasNext()) {
@@ -137,63 +188,63 @@ public class ExcelSheet {
 				for (int i = 0; i < totalColumns; i++) {
 					columnName = map.get(i);
 					cell = row.getCell(i);
-					switch (columnName.toLowerCase().replaceAll("\\s+", "")) {
-					case "name":
-					case "fullname":
-					case "devoteename":
-					case "devotee'sname":
-					case "completename":
+					switch (columnName.toLowerCase().replaceAll(S, REPLACEMENT)) {
+					case NAME2:
+					case FULLNAME:
+					case DEVOTEENAME:
+					case DEVOTEE_SNAME:
+					case COMPLETENAME:
 						devotee.setName(cell.getStringCellValue());
 						break;
-					case "mobilenumber":
-					case "mobile":
-					case "phonenumber":
-					case "phone":
-					case "contactnumber":
-					case "contact":
+					case MOBILENUMBER:
+					case MOBILE:
+					case PHONENUMBER:
+					case PHONE:
+					case CONTACTNUMBER:
+					case CONTACT:
 						devotee.setMobileNumber(cell.getStringCellValue());
 						break;
-					case "email":
-					case "emailaddress":
-					case "emailid":
+					case EMAIL2:
+					case EMAILADDRESS:
+					case EMAILID:
 						devotee.setEmail(cell.getStringCellValue());
 						break;
-					case "father'sname":
-					case "fathername":
+					case FATHER_SNAME:
+					case FATHERNAME:
 						devotee.setFatherName(cell.getStringCellValue());
 						break;
-					case "emergencynumber":
-					case "emergencycontact":
-					case "emergencycontactnumber":
+					case EMERGENCYNUMBER:
+					case EMERGENCYCONTACT:
+					case EMERGENCYCONTACTNUMBER:
 						devotee.setEmergencyNumber(cell.getStringCellValue());
 						break;
-					case "currentaddress":
+					case CURRENTADDRESS:
 						devotee.setCurrentAddress(cell.getStringCellValue());
 						break;
-					case "permanentaddress":
-					case "address":
-					case "homeaddress":
-					case "hometown":
+					case PERMANENTADDRESS:
+					case ADDRESS:
+					case HOMEADDRESS:
+					case HOMETOWN:
 						devotee.setPermanentAddress(cell.getStringCellValue());
 						break;
-					case "dateofbirth":
-					case "dob":
-					case "birthdate":
+					case DATEOFBIRTH:
+					case DOB:
+					case BIRTHDATE:
 						devotee.setDob(parser.parse(cell.getStringCellValue()).get(0).getDates().get(0));
 						break;
-					case "bacejoindate":
-					case "bacejoiningdate":
-					case "joiningdate":
-					case "joindate":
-					case "join":
-					case "bacejoin":
-					case "bacejoining":
+					case BACEJOINDATE:
+					case BACEJOININGDATE:
+					case JOININGDATE:
+					case JOINDATE:
+					case JOIN:
+					case BACEJOIN:
+					case BACEJOINING:
 						devotee.setBaceJoinDate(parser.parse(cell.getStringCellValue()).get(0).getDates().get(0));
 						break;
-					case "baceleftdate":
-					case "leftdate":
-					case "left":
-					case "baceleft":
+					case BACELEFTDATE:
+					case LEFTDATE:
+					case LEFT:
+					case BACELEFT:
 						devotee.setBaceLeftDate(parser.parse(cell.getStringCellValue()).get(0).getDates().get(0));
 						break;
 					}

@@ -2,6 +2,7 @@ package bace.dao;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
 import org.hibernate.Session;
@@ -28,7 +29,7 @@ public class DevoteeDao {
 
 	private Session session;
 	
-	private SimpleExpression se1, se2, se3, se4, se5, se6, se7;
+	private SimpleExpression se0, se1, se2, se3, se4, se5, se6, se7;
 	
 	public int save(Devotee devotee) {
 		session = sessionFactory.getCurrentSession();
@@ -56,7 +57,11 @@ public class DevoteeDao {
 			cr.setMaxResults(max);
 			cr.setFirstResult((Integer.parseInt(pageNumber) - 1) * max);
 		}
-		if (searchQuery != null && !searchQuery.isEmpty()) {
+		if (!isNullOrEmpty(searchQuery)) {
+			if (StringUtils.isNumeric(searchQuery)) {
+				se0 = Restrictions.eq(ID2, searchQuery);
+				cr.add(Restrictions.or(se0));
+			}
 			se1 = Restrictions.like(NAME, PERCENT + searchQuery + PERCENT);
 			se2 = Restrictions.like(PERMANENT_ADDRESS, PERCENT + searchQuery + PERCENT);
 			se3 = Restrictions.like(CURRENT_ADDRESS, PERCENT + searchQuery + PERCENT);
@@ -66,9 +71,8 @@ public class DevoteeDao {
 			se7 = Restrictions.like(FATHER_NAME, PERCENT + searchQuery + PERCENT);
 			cr.add(Restrictions.or(se1, se2, se3, se4, se5, se6, se7));
 		}
-		if (sortBy != null && !sortBy.isEmpty()) {
-			if (order == null || order.isEmpty()
-					|| order.equalsIgnoreCase(ASCENDING)) {
+		if (!isNullOrEmpty(sortBy)) {
+			if (isNullOrEmpty(order) || order.equalsIgnoreCase(ASCENDING)) {
 				cr.addOrder(Order.asc(sortBy).nulls(NullPrecedence.LAST));
 			} else {
 				cr.addOrder(Order.desc(sortBy).nulls(NullPrecedence.LAST));
@@ -90,7 +94,11 @@ public class DevoteeDao {
 		session = sessionFactory.getCurrentSession();
 		Criteria cr = session.createCriteria(Devotee.class);
 		if (searchQuery != null && !searchQuery.isEmpty()) {
-			SimpleExpression se1, se2, se3, se4, se5, se6, se7;
+			SimpleExpression se0, se1, se2, se3, se4, se5, se6, se7;
+			if (StringUtils.isNumeric(searchQuery)) {
+				se0 = Restrictions.eq(ID2, searchQuery);
+				cr.add(Restrictions.or(se0));
+			}
 			se1 = Restrictions.like(NAME, PERCENT + searchQuery + PERCENT);
 			se2 = Restrictions.like(PERMANENT_ADDRESS, PERCENT + searchQuery + PERCENT);
 			se3 = Restrictions.like(CURRENT_ADDRESS, PERCENT + searchQuery + PERCENT);

@@ -16,9 +16,9 @@
 		</fieldset>
 	</form>
 	<p [hidden]="showProgress"><b>NOTE : </b>First row (line) must contain column names. Valid column names are <i>Name</i>, <i>Mobile Number</i>, <i>Email</i>, <i>Date of Birth</i>, <i>Father's Name</i>, <i>Emergency Number</i>, <i>Bace Join Date</i>, <i>Bace Left Date</i> and <i>Current Address</i>.</p>
-	<progress class="progress progress-success" value="{{progress}}" max="100"></progress>
+	<p style="text-align:center;font-weight:bold;color:#00C853" [hidden]="!showProgress">Please Wait ...</p>
 </div>
-<div class="modal-footer">
+<div [hidden]="showProgress" class="modal-footer">
 	<button type="button" class="btn btn-success" (click)="upload()">Upload</button>
 	<button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Cancel</button>
 </div>
