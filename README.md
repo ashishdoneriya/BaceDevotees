@@ -10,4 +10,4 @@ It will start jetty server.
 5. Now open your browser and open url <code>localhost:8080</code>
 6. Leave the password field empty and click on login button.
 7. That's it.
-NOTE: Please read https://github.com/ashishdoneriya/LittleBlueBird/wiki
+<p><b>NOTE :</b> Please read https://github.com/ashishdoneriya/LittleBlueBird/wiki</p>
