@@ -14,10 +14,18 @@ export class ApiService {
 	constructor(private http: Http) { }
 
 	login(password: string) {
-		return this.http.post('/apis/dologin', { 'password': password }).map(this.extractData);
+		let params: URLSearchParams = new URLSearchParams();
+		params.set("password", password);
+		let body = params.toString()
+
+		var headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		return this.http.post('/dologin', body, {
+            headers: headers
+          }).map(this.extractBody);
 	}
 	logout() {
-		this.http.post('/apis/logout', {});
+		this.http.post('/dologout', {});
 	}
 
 	list(searchQuery?: string, pageNumber?: any, maximumResults?: any, sortBy?: any, order?: any) {
@@ -99,6 +107,10 @@ export class ApiService {
 	private extractData(res: Response) {
 		let body = res.json();
 		return body.data || null;
+	}
+
+	private extractBody(res: any) {
+		return res._body;
 	}
 
 	private handleError(error: Response | any) {

@@ -32,21 +32,24 @@ export class LoginComponent implements OnInit {
 	}
 
 	login() {
-		if (this.password == '') {
-			this.router.navigate(['admin']);
-		} else {
-			this.toastyService.error(this.toastOptions);
-			this.password = '';
-		}
+		// if (this.password == '') {
+		// 	this.router.navigate(['admin']);
+		// } else {
+		// 	this.toastyService.error(this.toastOptions);
+		// 	this.password = '';
+		// }
 
-		/*	this.apiService.login(this.password).subscribe(
-				result => {
-					if (result == 'success') {
-						this.router.navigate(['admin']);
-					}
-				},
-				error => console.log(error)
-			);*/
+		this.apiService.login(this.password).subscribe(
+			result => {
+				if (result == 'success') {
+					this.router.navigate(['admin']);
+				} else {
+					this.toastyService.error(this.toastOptions);
+					this.password = '';
+				}
+			},
+			error => console.log(error)
+		);
 	}
 
 }

@@ -68,5 +68,16 @@
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 	</bean>
+	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/apis*" />
+			<bean class="bace.interceptor.AdminInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="admin" />
+			<bean class="bace.interceptor.Admin1Interceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 </beans>
