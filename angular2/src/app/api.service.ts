@@ -85,16 +85,12 @@ export class ApiService {
 			xhr.onreadystatechange = function () {
 				if (xhr.readyState === 4) {
 					if (xhr.status === 200) {
-						observer.next(xhr.response);
 						observer.complete();
 					} else {
 						observer.error(xhr.response);
 					}
 				}
 			}
-			xhr.upload.onprogress = (event: ProgressEvent) => {
-				observer.next(Math.round(event.loaded / event.total * 100))
-			};
 			xhr.open('POST', '/apis/upload', true);
 			xhr.send(formData);
 		});

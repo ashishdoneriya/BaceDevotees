@@ -64,7 +64,7 @@
 				<thead class="thead-inverse">
 					<tr>
 						<th [hidden]="!cSerialNumber">#</th>
-						<th *ngFor="let column of columnsList" [hidden]="!column.isSelected" (click)="updateSortOrder(column.id)" style="cursor:pointer">{{column.name}} <i *ngIf="sortBy == column.id && order = 'ascending'" class="fa fa-sort-asc" aria-hidden="true"></i><i *ngIf="sortBy == column.id && order = 'descending'" class="fa fa-sort-desc" aria-hidden="true"></i></th>
+						<th *ngFor="let column of columnsList" [hidden]="!column.isSelected" (click)="updateSortOrder(column.id)" style="cursor:pointer">{{column.name}} <i *ngIf="sortBy == column.id && order == 'ascending'" class="fa fa-sort-asc" aria-hidden="true"></i><i *ngIf="sortBy == column.id && order == 'descending'" class="fa fa-sort-desc" aria-hidden="true"></i></th>
 						<th [hidden]="!cActions"></th>
 					</tr>
 				</thead>

@@ -117,6 +117,7 @@ public class AdminController {
 				}.getType();
 				selectedColumns = gson.fromJson(sColumnsList, type);
 			}
+			selectedColumns.add(0, "id");
 			List<Devotee> list = devoteeDao.list(searchQuery, null, null, sortBy, order);
 			Workbook workbook = excelSheet.create(list, selectedColumns);
 

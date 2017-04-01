@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -103,6 +104,10 @@ public class ExcelSheet {
 			for (String columnName : columns) {
 				cell = row.createCell(columnNumber++);
 				switch (columnName) {
+				case ID :
+					cell.setCellType(CellType.NUMERIC);
+					cell.setCellValue(devotee.getId());
+					break;
 				case NAME:
 					cell.setCellValue(checkNull(devotee.getName()));
 					break;

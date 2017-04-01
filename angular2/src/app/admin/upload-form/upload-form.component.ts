@@ -26,8 +26,12 @@ export class UploadFormComponent {
 
 	upload() {
 		this.showProgress = true;
+
 		this.apiService.upload(this.file).subscribe(
-			next => {},
+			next => {
+				console.log('complete');
+				this.activeModal.close('success');
+			},
 			error => {
 				this.activeModal.close(error);
 			},
