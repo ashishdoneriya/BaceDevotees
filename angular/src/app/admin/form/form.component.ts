@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, Inject } from '@angular/core';
+import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { Devotee } from '../../devotee';
 
 @Component({
@@ -9,10 +9,14 @@ import { Devotee } from '../../devotee';
 })
 export class FormComponent {
 
-	@Input() devotee: Devotee;
+	devotee: Devotee;
 
-	@Input() type: string;
+	type: string;
 
-	constructor(public activeModal: NgbActiveModal) {}
+	constructor(public dialog: MdDialogRef<FormComponent>,
+		@Inject(MD_DIALOG_DATA) public data: Map<any, any>) {
+		this.devotee = data['devotee'];
+		this.type = data['type'];
+	}
 
 }

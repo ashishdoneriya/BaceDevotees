@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { MdDialog } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import "rxjs/add/operator/debounceTime";
@@ -14,18 +14,10 @@ import {
 	ToastData
 } from 'ng2-toasty';
 
-import {
-	NgbModal,
-	NgbModalRef,
-	NgbModalOptions,
-	ModalDismissReasons
-} from '@ng-bootstrap/ng-bootstrap';
-
 import { ApiService } from '../api.service';
 import { Devotee } from '../devotee';
 import { FormComponent } from './form/form.component';
 import { UploadFormComponent } from './upload-form/upload-form.component';
-
 
 export class Column {
 	name: string;
@@ -105,15 +97,14 @@ export class AdminComponent implements OnInit {
 	];
 
 	toastOptions: ToastOptions;
-	uploadModal: NgbModal;
 
 	private searchTermStream = new Subject<string>();
 
 	constructor(private apiService: ApiService,
 		private router: Router,
-		private modalService: NgbModal,
 		private toastyService: ToastyService,
-		private toastyConfig: ToastyConfig) {
+		private toastyConfig: ToastyConfig,
+		public dialog: MdDialog) {
 	}
 
 	updateSortOrder(property) {
@@ -168,11 +159,15 @@ export class AdminComponent implements OnInit {
 
 	add() {
 		let devotee: Devotee = new Devotee();
-		let modelOption: NgbModalOptions = { backdrop: false, keyboard: true };
-		let modalRef: NgbModalRef = this.modalService.open(FormComponent, modelOption);
-		modalRef.componentInstance.devotee = devotee;
-		modalRef.componentInstance.type = "Add";
-		modalRef.result.then(result => {
+		let dialogRef = this.dialog.open(FormComponent, {
+			height: '400px',
+			width: '600px',
+			data: {
+				'devotee': devotee,
+				'type': 'Add'
+			}
+		});
+		dialogRef.afterClosed().subscribe(result => {
 			if (result == 'save') {
 				this.apiService.save(devotee).subscribe(message => {
 					this.toastOptions.title = 'Record Added';
@@ -185,17 +180,20 @@ export class AdminComponent implements OnInit {
 					this.toastyService.error(this.toastOptions);
 				});
 			}
-		}, (reason) => {
 		});
 	}
 
 	edit(devotee: Devotee) {
-		let modelOption: NgbModalOptions = { backdrop: false, keyboard: true };
-		let modalRef: NgbModalRef = this.modalService.open(FormComponent, modelOption);
 		let temp = this.copy(devotee);
-		modalRef.componentInstance.devotee = temp;
-		modalRef.componentInstance.type = "Update";
-		modalRef.result.then(result => {
+		let dialogRef = this.dialog.open(FormComponent, {
+			height: '400px',
+			width: '600px',
+			data: {
+				'devotee': temp,
+				'type': 'Update'
+			}
+		});
+		dialogRef.afterClosed().subscribe(result => {
 			if (result == 'save') {
 				this.apiService.save(temp).subscribe(message => {
 					this.toastOptions.title = 'Record Updated';
@@ -208,7 +206,6 @@ export class AdminComponent implements OnInit {
 					this.toastyService.error(this.toastOptions);
 				});
 			}
-		}, (reason) => {
 		});
 	}
 
@@ -256,9 +253,11 @@ export class AdminComponent implements OnInit {
 	}
 
 	upload() {
-		let modelOption: NgbModalOptions = { backdrop: false, keyboard: true };
-		let modalRef: NgbModalRef = this.modalService.open(UploadFormComponent);
-		modalRef.result.then(result => {
+		let dialogRef = this.dialog.open(UploadFormComponent, {
+			height: '345px',
+			width: '600px'
+		});
+		dialogRef.afterClosed().subscribe(result => {
 			if (result == 'success') {
 				this.toastOptions.title = '';
 				this.toastOptions.msg = 'Records have been added successfully';

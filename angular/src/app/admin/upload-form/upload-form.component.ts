@@ -1,5 +1,5 @@
-import { Component, EventEmitter, ViewChild } from '@angular/core';
-import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component } from '@angular/core';
+import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { ApiService } from '../../api.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class UploadFormComponent {
 	showProgress: boolean = false;
 
 	constructor(public apiService: ApiService,
-		public activeModal: NgbActiveModal) {
+		public dialog: MdDialogRef<UploadFormComponent>) {
 	}
 
 	onChange(event: EventTarget) {
@@ -29,15 +29,14 @@ export class UploadFormComponent {
 
 		this.apiService.upload(this.file).subscribe(
 			next => {
-				console.log('complete');
-				this.activeModal.close('success');
+				this.dialog.close('success');
 			},
 			error => {
-				this.activeModal.close(error);
+				this.dialog.close(error);
 			},
 			() => {
 				console.log('complete');
-				this.activeModal.close('success');
+				this.dialog.close('success');
 			}
 		);
 	}

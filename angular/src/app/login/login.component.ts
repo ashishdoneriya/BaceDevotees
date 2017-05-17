@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
 		this.password = '';
 	}
 
-	login() {
+	login() {	this.router.navigate(['admin']);
 		// if (this.password == '') {
 		// 	this.router.navigate(['admin']);
 		// } else {
@@ -39,17 +39,17 @@ export class LoginComponent implements OnInit {
 		// 	this.password = '';
 		// }
 
-		this.apiService.login(this.password).subscribe(
-			result => {
-				if (result == 'success') {
-					this.router.navigate(['admin']);
-				} else {
-					this.toastyService.error(this.toastOptions);
-					this.password = '';
-				}
-			},
-			error => console.log(error)
-		);
+		// this.apiService.login(this.password).subscribe(
+		// 	result => {
+		// 		if (result == 'success') {
+		// 			this.router.navigate(['admin']);
+		// 		} else {
+		// 			this.toastyService.error(this.toastOptions);
+		// 			this.password = '';
+		// 		}
+		// 	},
+		// 	error => console.log(error)
+		// );
 	}
 
 }
