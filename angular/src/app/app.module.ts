@@ -13,6 +13,7 @@ import { ApiService } from './api.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormComponent } from './admin/form/form.component';
 import { UploadFormComponent } from './admin/upload-form/upload-form.component';
+import 'hammerjs';
 
 const appRoutes: Routes = [
 	{ path: '', component: LoginComponent },
